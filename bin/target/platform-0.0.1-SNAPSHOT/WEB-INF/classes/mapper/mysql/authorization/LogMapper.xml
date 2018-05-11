@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.frame.log.log4j.LogDto">
+
+	<!-- 登录log -->
+	<insert id="insertLogonLog" parameterType="java.util.List">
+		insert into SYS_LOGONLOG(logonid, userid, ip, macaddr, logontime, logonflag, logfailedreason, sessionid) 
+		values 
+		<foreach collection="list" item="item" separator=",">
+			 (#{item.logonId},#{item.userid},#{item.ip},#{item.macaddr},#{item.logontime},#{item.logonflag},#{item.logfailedreason},#{item.sessionId})  
+		</foreach>
+	</insert>
+	
+	<!-- 更新用户下线时间 -->
+	<update id="updateLogonOffTime" parameterType="com.platform.frame.log.log4j.LogDto">
+		update SYS_LOGONLOG set logofftime = #{logofftime} where logonid = #{logonId}
+	</update>
+	
+	<!-- 更新所有用户下线时间 -->
+	<update id="updateAllLogonOffTime" parameterType="com.platform.frame.log.log4j.LogDto">
+		update SYS_LOGONLOG set logofftime = #{logofftime} where logonflag=1 and logofftime is null;
+	</update>
+	
+	<!-- 插入sql操作log -->
+	<insert id="insertSqlLog" parameterType="java.util.List">
+		insert into SYS_SQLLOG(sqlid, userid, userip, macaddr, SYS_SQLLOG.sql, starttime, endtime, success, type, timecost) 
+		values 
+		<foreach collection="list" item="item" separator=",">
+			 (#{item.id},#{item.userid},#{item.userip},#{item.macAddr},#{item.sql},#{item.starttime},#{item.endtime},#{item.success},#{item.type},#{item.timecost})  
+		</foreach>
+	</insert>
+	
+	<insert id="insertOperateLog" parameterType="java.util.List">
+		insert into SYS_OPERATELOG (operateid, userid, userip, operate, url, starttime, endtime, module, description, macaddr, timecost) 
+		values 
+		<foreach collection="list" item="item" separator=",">
+			 (#{item.id},#{item.userid},#{item.userip},#{item.operate},#{item.url},#{item.starttime},#{item.endtime},#{item.module},#{item.description},#{item.macaddr},#{item.timecost})  
+		</foreach>
+	</insert>
+	
+</mapper>

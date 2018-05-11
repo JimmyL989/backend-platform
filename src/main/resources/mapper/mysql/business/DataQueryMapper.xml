@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.business.dto.DataQueryDto">
+
+	<!-- 查询预报列表 -->
+	<select id="queryForecast" parameterType="com.platform.business.dto.CropDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select * from (
+			select u.urban_forecast_transfer_id,('今天' + substring(convert(varchar,u.play_time, 120), 0, 11) +
+			',()。' + u._forecast_time + ',(' + u.lunar_play_time + '),' + u.temp_en
+			+ ',' + u.weather + ',' + u.wind_d + u.wind_v + '。') content1,
+			(u.temp_en + ',' + u.weather + ',' + u.wind_d + u.wind_v + '。') content,
+			a.stationname,a.stationnum, a.awstation_id,
+			a.admin_region_id id3,m.admin_region_name name3,m.parent_admin_region_id
+			id2,n.admin_region_name
+			name2,n.parent_admin_region_id id1,p.admin_region_name name1,u.play_time,u.time
+		
+			from urban_forecast_transfer u left join awstation a on
+			u.forecast_station_id = a.stationnum 
+		
+			left join admin_region m on a.admin_region_id = m.admin_region_id left join
+			admin_region n on m.parent_admin_region_id = n.admin_region_id
+			left join admin_region p on n.parent_admin_region_id = p.admin_region_id where  a.stationclass = 'NA' 
+		) x
+		<where>
+			<trim prefixOverrides="and">
+				<if test="regionId != null and regionId != ''">and id3 = #{regionId}</if>
+				<if test="regionId1 != null and regionId1 != ''">and id2 = #{regionId1}</if>
+				<if test="regionId2 != null and regionId2 != ''">and id1 = #{regionId2}</if>
+				<if test="stationname != null and stationname != ''">and stationname like '%' + '${stationname}' + '%'</if>
+				<if test="play_time != null and play_time != ''">and CONVERT(varchar(10), play_time, 120) = #{play_time}</if>
+			</trim>
+		</where>
+		 
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询预报列表条数 -->
+	<select id="queryForecastCount" parameterType="com.platform.business.dto.CropDto" resultType="java.lang.Long">
+		select count(urban_forecast_transfer_id) from (
+			select u.urban_forecast_transfer_id,('今天' + substring(convert(varchar,u.play_time, 120), 0, 11) +
+			',()。' + u._forecast_time + ',(' + u.lunar_play_time + '),' + u.temp_en
+			+ ',' + u.weather + ',' + u.wind_d + u.wind_v + '。') content1,
+			(u.temp_en + ',' + u.weather + ',' + u.wind_d + u.wind_v + '。') content,
+			a.stationname,a.stationnum, a.awstation_id,
+			a.admin_region_id id3,m.admin_region_name name3,m.parent_admin_region_id
+			id2,n.admin_region_name
+			name2,n.parent_admin_region_id id1,p.admin_region_name name1,u.play_time,u.time
+		
+			from urban_forecast_transfer u left join awstation a on
+			u.forecast_station_id = a.stationnum 
+		
+			left join admin_region m on a.admin_region_id = m.admin_region_id left join
+			admin_region n on m.parent_admin_region_id = n.admin_region_id
+			left join admin_region p on n.parent_admin_region_id = p.admin_region_id where  a.stationclass = 'NA' 
+		) x
+		<where>
+			<trim prefixOverrides="and">
+				<if test="regionId != null and regionId != ''">and id3 = #{regionId}</if>
+				<if test="regionId1 != null and regionId1 != ''">and id2 = #{regionId1}</if>
+				<if test="regionId2 != null and regionId2 != ''">and id1 = #{regionId2}</if>
+				<if test="stationname != null and stationname != ''">and stationname like '%' + '${stationname}' + '%'</if>
+				<if test="play_time != null and play_time != ''">and CONVERT(varchar(10), play_time, 120) = #{play_time}</if>
+			</trim>
+		</where>
+	</select>
+	
+	<select id="queryLiveColumns" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select d.data_table,o.observe_type,o.data_column from z_observe_type o LEFT JOIN z_data_type d ON o.data_id = d.data_id where o.data_id = #{id} and data_table is not null and data_column is not null
+	</select>
+	
+	<select id="queryStationByRegion" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select awstation_id, stationname + '(' + stationnum + ')' stationname, admin_region_id from awstation where admin_region_id = #{id} 
+	</select>
+	
+	<select id="queryLive" parameterType="com.platform.business.dto.CropDto" resultType="java.util.HashMap">
+		${sql}
+	</select>
+	
+	<select id="queryTypeCombo" resultType="java.util.HashMap" parameterType="java.lang.String">
+		select data_id, data_type from z_data_type t LEFT JOIN awstation a ON a.stationclass = t.station_type where a.awstation_id = #{id}
+	</select>
+</mapper>

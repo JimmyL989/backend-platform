@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.authorization.dto.GroupDto">
+
+	<!-- 查询角色列表 -->
+	<select id="dataGrid_mysql" parameterType="com.platform.authorization.dto.GroupDto" resultType="java.util.HashMap">
+		select sys_group_id, groupname, cuserid, cdate, euserid, edate, memo from SYS_GROUP 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="groupname != null and groupname != ''">and groupname like CONCAT("%",#{groupname},"%")</if>
+			</trim>
+		</where>
+		<if test="sqlOrder != null"> ${sqlOrder} </if>
+		<if test="sqlLimit != null"> ${sqlLimit} </if>
+	</select>
+	
+	<select id="dataGrid_sqlserver2008" parameterType="com.platform.authorization.dto.GroupDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select sys_group_id, groupname, cuserid, cdate, euserid, edate, memo from SYS_GROUP 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="groupname != null and groupname != ''">and groupname like '%' + '${groupname}' + '%')</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询角色列表条数 -->
+	<select id="queryGroupCount_mysql" parameterType="com.platform.authorization.dto.GroupDto" resultType="java.lang.Long">
+		select count(sys_group_id) as count from SYS_GROUP 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="groupname != null and groupname != ''">and groupname like CONCAT("%",#{groupname},"%")</if>
+			</trim>
+		</where>
+	</select>
+	
+	<select id="queryGroupCount_sqlserver2008" parameterType="com.platform.authorization.dto.GroupDto" resultType="java.lang.Long">
+		select count(sys_group_id) as count from SYS_GROUP 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="groupname != null and groupname != ''">and groupname like '%' + '${groupname}' + '%'</if>
+			</trim>
+		</where>
+	</select>
+	
+	<!-- 插入角色 -->
+	<insert id="insertGroup_mysql" parameterType="com.platform.authorization.dto.GroupDto">
+		insert into SYS_GROUP (groupname, cuserid, cdate, memo) values(#{groupname}, #{cuserid}, now(), #{memo})
+	</insert>
+	<insert id="insertGroup_sqlserver2008" parameterType="com.platform.authorization.dto.GroupDto">
+		insert into SYS_GROUP (groupname, cuserid, cdate, memo) values(#{groupname}, #{cuserid}, getdate(), #{memo})
+	</insert>
+	
+	<!-- 根据ID查询角色信息 -->
+	<select id="queryGroupById" resultType="java.util.HashMap" parameterType="java.lang.String">
+		select sys_group_id, groupname, memo from SYS_GROUP where sys_group_id = #{id}
+	</select>
+	
+	<!-- 更新角色信息 -->
+	<update id="updateGroup_mysql" parameterType="com.platform.authorization.dto.GroupDto">
+		update SYS_GROUP set groupname = #{groupname}, memo = #{memo}, euserid = #{euserid}, edate = now() 
+		where sys_group_id = #{sys_group_id}
+	</update>
+	<update id="updateGroup_sqlserver2008" parameterType="com.platform.authorization.dto.GroupDto">
+		update SYS_GROUP set groupname = #{groupname}, memo = #{memo}, euserid = #{euserid}, edate = getdate() 
+		where sys_group_id = #{sys_group_id}
+	</update>
+	
+	<!-- 删除角色 -->
+	<delete id="deleteGroup" parameterType="java.lang.String">
+		delete from SYS_GROUP where sys_group_id = #{id}
+	</delete>
+	
+	<!-- 查询用户未授权的角色列表 -->
+	<select id="noExistGroup_mysql" parameterType="com.platform.authorization.dto.GroupDto" resultType="java.util.HashMap">
+		select sys_group_id, groupname, cuserid, cdate, euserid, edate, memo from SYS_GROUP 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="groupname != null and groupname != ''">and groupname like CONCAT("%",#{groupname},"%")</if>
+				and SYS_GROUP_ID 
+				<if test="exist == 0"> not in </if> 
+				<if test="exist == 1"> in </if> 
+				(select sys_group_id from SYS_USER_GROUP where SYS_USER_ID = #{sys_user_id})
+			</trim>
+		</where>
+		<if test="sqlOrder != null"> ${sqlOrder} </if>
+		<if test="sqlLimit != null"> ${sqlLimit} </if>
+	</select>
+	
+	<select id="noExistGroup_sqlserver2008" parameterType="com.platform.authorization.dto.GroupDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select sys_group_id, groupname, cuserid, cdate, euserid, edate, memo from SYS_GROUP 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="groupname != null and groupname != ''">and groupname like '%' + '${groupname}' + '%'</if>
+				and SYS_GROUP_ID 
+				<if test="exist == 0"> not in </if> 
+				<if test="exist == 1"> in </if> 
+				(select sys_group_id from SYS_USER_GROUP where SYS_USER_ID = #{sys_user_id})
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询用户未授权的角色列表条数 -->
+	<select id="noExistGroupCount_mysql" parameterType="com.platform.authorization.dto.GroupDto" resultType="java.lang.Long">
+		select count(sys_group_id) as count from SYS_GROUP 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="groupname != null and groupname != ''">and groupname like CONCAT("%",#{groupname},"%")</if>
+				and SYS_GROUP_ID 
+				<if test="exist == 0"> not in </if> 
+				<if test="exist == 1"> in </if> 
+				(select sys_group_id from SYS_USER_GROUP where SYS_USER_ID = #{sys_user_id})
+			</trim>
+		</where>
+	</select>
+	
+	<select id="noExistGroupCount_sqlserver2008" parameterType="com.platform.authorization.dto.GroupDto" resultType="java.lang.Long">
+		select count(sys_group_id) as count from SYS_GROUP 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="groupname != null and groupname != ''">and groupname like '%' + '${groupname}' + '%'</if>
+				and SYS_GROUP_ID 
+				<if test="exist == 0"> not in </if> 
+				<if test="exist == 1"> in </if> 
+				(select sys_group_id from SYS_USER_GROUP where SYS_USER_ID = #{sys_user_id})
+			</trim>
+		</where>
+	</select>
+	
+	<!-- 授权用户 -->
+	<insert id="assignUser" parameterType="com.platform.authorization.dto.GroupDto">
+		insert into SYS_USER_GROUP (sys_user_id, sys_group_id) values (#{sys_user_id}, #{sys_group_id})
+	</insert>
+	
+	<!-- 移除用户授权 -->
+	<delete id="cancelUser" parameterType="com.platform.authorization.dto.GroupDto">
+		delete from SYS_USER_GROUP where sys_user_id = #{ids} and sys_group_id in (${sys_group_id})
+	</delete>
+	
+</mapper>

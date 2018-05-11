@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.business.dto.AwstationDto">
+
+	<!-- 查询站点列表 -->
+	<select id="queryAwstation" parameterType="com.platform.business.dto.AwstationDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select * from (
+			select awstation_id, stationnum, stationname, a.admin_region_id,
+			m.admin_region_name name3,m.parent_admin_region_id
+			id2,n.admin_region_name
+			name2,n.parent_admin_region_id id1,p.admin_region_name name1 
+			from awstation a left join admin_region m on a.admin_region_id =
+			m.admin_region_id left join
+			admin_region n on m.parent_admin_region_id = n.admin_region_id
+			left join admin_region p on n.parent_admin_region_id = p.admin_region_id
+		) x
+		<where>
+			<trim prefixOverrides="and">
+				<if test="stationname != null and stationname != ''">and stationname like '%' + '${stationname}' + '%'</if>
+				<if test="stationnum != null and stationnum != ''">and stationnum like '%' + '${stationnum}' + '%'</if>
+				<if test="regionId != null and regionId != ''">and admin_region_id = #{regionId}</if>
+				<if test="regionId1 != null and regionId1 != ''">and id2 = #{regionId1}</if>
+				<if test="regionId2 != null and regionId2 != ''">and id1 = #{regionId2}</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询站点列表条数 -->
+	<select id="queryAwstationCount" parameterType="com.platform.business.dto.AwstationDto" resultType="java.lang.Long">
+		select count(awstation_id) from (
+			select awstation_id, stationnum, stationname, a.admin_region_id,
+			m.admin_region_name name3,m.parent_admin_region_id
+			id2,n.admin_region_name
+			name2,n.parent_admin_region_id id1,p.admin_region_name name1
+			from awstation a left join admin_region m on a.admin_region_id =
+			m.admin_region_id left join
+			admin_region n on m.parent_admin_region_id = n.admin_region_id
+			left join admin_region p on n.parent_admin_region_id = p.admin_region_id
+		) x
+		<where>
+			<trim prefixOverrides="and">
+				<if test="stationname != null and stationname != ''">and stationname like '%' + '${stationname}' + '%'</if>
+				<if test="stationnum != null and stationnum != ''">and stationnum like '%' + '${stationnum}' + '%'</if>
+				<if test="regionId != null and regionId != ''">and admin_region_id = #{regionId}</if>
+				<if test="regionId1 != null and regionId1 != ''">and id2 = #{regionId1}</if>
+				<if test="regionId2 != null and regionId2 != ''">and id1 = #{regionId2}</if>
+			</trim>
+		</where>
+	</select>
+	
+	<!-- 插入站点 -->
+	<insert id="insertAwstation" parameterType="com.platform.business.dto.AwstationDto">
+		insert into awstation (stationname, stationnum, admin_region_id) values(#{stationname}, #{stationnum}, #{regionId})
+	</insert>
+	
+	<!-- 根据ID查询站点 -->
+	<select id="queryAwstationById" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select awstation_id, stationname, stationnum, admin_region_id from awstation where awstation_id = #{id}
+	</select>
+	
+	<!-- 修改站点 -->
+	<update id="updateAwstation" parameterType="com.platform.business.dto.AwstationDto">
+		update awstation set stationname = #{stationname}, stationnum = #{stationnum}, admin_region_id = #{regionId} where awstation_id = #{awstation_id} 
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="deleteAwstation" parameterType="java.lang.String">
+		delete from awstation where awstation_id = #{id}
+	</delete>
+	
+</mapper>

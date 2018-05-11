@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.authorization.dto.SysLogDto">
+
+	<!-- 查询登录log列表 -->
+	<select id="queryLogonLog_mysql" parameterType="com.platform.authorization.dto.SysLogDto" resultType="java.util.HashMap">
+		select sys_logonlog_id id, userid usercode, u.username username, ip ip, macaddr mac, logontime logontime, logofftime logofftime, logonflag logonflag, logfailedreason reason from SYS_LOGONLOG left outer join SYS_USER u on SYS_LOGONLOG.userid = u.usercode  
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and usercode like CONCAT("%",#{usercode},"%")</if>
+			</trim>
+		</where> 
+		<if test="sqlOrder != null"> ${sqlOrder} </if>
+		<if test="sqlLimit != null"> ${sqlLimit} </if>
+	</select>
+	<select id="queryLogonLog_sqlserver2008" parameterType="com.platform.authorization.dto.SysLogDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select sys_logonlog_id id, userid usercode, u.username username, ip ip, macaddr mac, logontime logontime, logofftime logofftime, logonflag logonflag, logfailedreason reason from SYS_LOGONLOG left outer join SYS_USER u on SYS_LOGONLOG.userid = u.usercode  
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and usercode like '%' + '${usercode}' + '%'</if>
+			</trim>
+		</where> 
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询登录log条数 -->
+	<select id="queryLogonLogCount_mysql" parameterType="com.platform.authorization.dto.SysLogDto" resultType="java.lang.Long">
+		select count(sys_logonlog_id) as count from SYS_LOGONLOG 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and userid like CONCAT("%",#{usercode},"%")</if>
+			</trim>
+		</where>
+	</select>
+	<select id="queryLogonLogCount_sqlserver2008" parameterType="com.platform.authorization.dto.SysLogDto" resultType="java.lang.Long">
+		select count(sys_logonlog_id) as count from SYS_LOGONLOG 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and userid like '%' + '${usercode}' + '%'</if>
+			</trim>
+		</where>
+	</select>
+	
+	<!-- 查询访问log列表 -->
+	<select id="queryOperateLog_mysql" parameterType="com.platform.authorization.dto.SysLogDto" resultType="java.util.HashMap">
+		select id id, u.usercode usercode, u.username username, userip ip, macaddr mac, url url, starttime starttime, timecost costtime, description descp from SYS_OPERATELOG left outer join SYS_USER u on userid = u.usercode   
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and userid like CONCAT("%",#{usercode},"%")</if>
+			</trim>
+		</where> 
+		<if test="sqlOrder != null"> ${sqlOrder} </if>
+		<if test="sqlLimit != null"> ${sqlLimit} </if>
+	</select>
+	<select id="queryOperateLog_sqlserver2008" parameterType="com.platform.authorization.dto.SysLogDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select id id, u.usercode usercode, u.username username, userip ip, macaddr mac, url url, starttime starttime, timecost costtime, description descp from SYS_OPERATELOG left outer join SYS_USER u on userid = u.usercode   
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and userid like '%' + '${usercode}' + '%'</if>
+			</trim>
+		</where> 
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询访问log条数 -->
+	<select id="queryOperateLogCount_mysql" parameterType="com.platform.authorization.dto.SysLogDto" resultType="java.lang.Long">
+		select count(id) as count from SYS_OPERATELOG 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and userid like CONCAT("%",#{usercode},"%")</if>
+			</trim>
+		</where>
+	</select>
+	<select id="queryOperateLogCount_sqlserver2008" parameterType="com.platform.authorization.dto.SysLogDto" resultType="java.lang.Long">
+		select count(id) as count from SYS_OPERATELOG 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and userid like '%' + '${usercode}' + '%'</if>
+			</trim>
+		</where>
+	</select>
+	
+	
+	<!-- 查询SQLlog列表 -->
+	<select id="querySqlLog_mysql" parameterType="com.platform.authorization.dto.SysLogDto" resultType="java.util.HashMap">
+		select sys_sqllog_id id, u.usercode usercode, u.username username, userip ip, macaddr mac, SYS_SQLLOG.sql _sql, starttime starttime, timecost costtime, success success, type type, timecost timecost from SYS_SQLLOG left outer join SYS_USER u on userid = u.usercode    
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and userid like CONCAT("%",#{usercode},"%")</if>
+			</trim>
+		</where> 
+		<if test="sqlOrder != null"> ${sqlOrder} </if>
+		<if test="sqlLimit != null"> ${sqlLimit} </if>
+	</select>
+	<select id="querySqlLog_sqlserver2008" parameterType="com.platform.authorization.dto.SysLogDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select sys_sqllog_id id, u.usercode usercode, u.username username, userip ip, macaddr mac, SYS_SQLLOG.sql _sql, starttime starttime, timecost costtime, success success, type type, timecost timecost from SYS_SQLLOG left outer join SYS_USER u on userid = u.usercode    
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and userid like '%' + '${usercode}' + '%'</if>
+			</trim>
+		</where> 
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询SQLlog条数 -->
+	<select id="querySqlLogCount_mysql" parameterType="com.platform.authorization.dto.SysLogDto" resultType="java.lang.Long">
+		select count(sys_sqllog_id) as count from SYS_SQLLOG 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and userid like CONCAT("%",#{usercode},"%")</if>
+			</trim>
+		</where>
+	</select>
+	<select id="querySqlLogCount_sqlserver2008" parameterType="com.platform.authorization.dto.SysLogDto" resultType="java.lang.Long">
+		select count(sys_sqllog_id) as count from SYS_SQLLOG 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and userid like '%' + '${usercode}' + '%'</if>
+			</trim>
+		</where>
+	</select>
+	
+</mapper>

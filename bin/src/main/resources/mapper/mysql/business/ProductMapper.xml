@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.business.dto.ProductDto">
+
+	<select id="querySensitive" resultType="java.util.HashMap">
+		select words from t_Sensitive
+	</select>
+
+	<select id="queryRelevant" parameterType="com.platform.business.dto.ProductDto" resultType="java.util.HashMap">
+		select advice_relevant_id, content from T_ADVICE_RELEVANT r LEFT JOIN Product p ON r.crops_id = p.Crop where p.Productid = #{productId} and period_id = #{period_id}
+	</select>
+	<select id="queryReference" parameterType="com.platform.business.dto.ProductDto" resultType="java.util.HashMap">
+		select advice_reference_id, content from T_ADVICE_REFERENCE r LEFT JOIN Product p ON r.crops_id = p.Crop where p.Productid = #{productId} and period_id = #{period_id}
+	</select>
+	<select id="queryAnalysis" parameterType="com.platform.business.dto.ProductDto" resultType="java.util.HashMap">
+		select advice_analysis_id, element, factor, conditions, content1, content2 from T_ADVICE_ANALYSIS r LEFT JOIN Product p ON r.crops_id = p.Crop where p.Productid = #{productId} and period_id = #{period_id}
+	</select>
+	<select id="queryFaming" parameterType="com.platform.business.dto.ProductDto" resultType="java.util.HashMap">
+		select advice_farming_id, content from T_ADVICE_FAMING r LEFT JOIN Product p ON r.crops_id = p.Crop where p.Productid = #{productId} and period_id = #{period_id}
+	</select>
+	<select id="queryCultivation" parameterType="com.platform.business.dto.ProductDto" resultType="java.util.HashMap">
+		select advice_cultivation_id, content,CASE WHEN period_id =0 THEN '通用' ELSE '特定' end type from T_ADVICE_CULTIVATION r LEFT JOIN Product p ON r.crops_id = p.Crop where p.Productid = #{productId} and (period_id =0 or period_id = #{period_id})
+	</select>
+	<select id="queryDeficiency" parameterType="com.platform.business.dto.ProductDto" resultType="java.util.HashMap">
+		select advice_deficiency_id, name, content from T_ADVICE_DEFICIENCY r LEFT JOIN Product p ON r.crops_id = p.Crop where p.Productid = #{productId}
+	</select>
+	<select id="queryPlant" parameterType="com.platform.business.dto.ProductDto" resultType="java.util.HashMap">
+		select advice_plant_id, name, conditions, symptom, measures,CASE WHEN period_id =0 THEN '通用' ELSE '特定' end type from T_ADVICE_PLANT r LEFT JOIN Product p ON r.crops_id = p.Crop where p.Productid = #{productId} and (period_id =0 or period_id = #{period_id})
+	</select>
+	
+	<select id="getAdvice" parameterType="java.lang.String" resultType="java.util.HashMap">
+		<!-- select p.productid, p.crop, r.period_id,(SELECT period_name from T_PERIOD where period_id = r.period_id ) period_name from Product p LEFT JOIN T_ADVICE_RELEVANT r ON p.crop = r.crops_id WHERE p.productid = #{id} and r.period_id is not null -->
+		select p.productid, p.crop, cp.period_id,(SELECT period_name from T_PERIOD where period_id = cp.period_id ) period_name from Product p LEFT JOIN T_CROPS_PERIOD cp ON p.Crop = cp.crops_id where p.Productid = #{id} and period_id is not null
+	</select>
+
+	<!-- 查询产品实例列表 -->
+	<select id="queryProduct" parameterType="com.platform.business.dto.ProductDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		<!-- select Instanceid, Region_code,
+		(select p.admin_region_name from admin_region m LEFT JOIN admin_region n on m.parent_admin_region_id = n.admin_region_id LEFT JOIN admin_region p on n.parent_admin_region_id = p.admin_region_id where m.admin_region_id = a.region_code) Regionname1, 
+		(select n.admin_region_name from admin_region m LEFT JOIN admin_region n on m.parent_admin_region_id = n.admin_region_id where m.admin_region_id = a.region_code) Regionname2,
+		(select n.admin_region_name from admin_region m LEFT JOIN admin_region n on m.parent_admin_region_id = n.admin_region_id where m.admin_region_id = a.region_code) Regionname2,
+		(select admin_region_name from admin_region where admin_region_id = a.region_code) Regionname3,
+		 Productid,
+		(select Product_name from Product where Productid = a.Productid) Productname,
+		 Period, Content, Created_time, cuserid, sendstate, euserid, edate
+		,(select username from SYS_USER where SYS_USER_ID = a.cuserid) cusername
+		,(select username from SYS_USER where SYS_USER_ID = a.euserid) eusername
+		 from Product_instance a -->
+		select * from (
+		select Instanceid, Region_code, Productid, Period, Content, Created_time, cuserid, sendstate, euserid, edate, 
+		(select Product_name from Product where Productid = a.Productid) Productname,
+		m.admin_region_name name3,m.parent_admin_region_id id2,n.admin_region_name
+		name2,n.parent_admin_region_id id1,p.admin_region_name name1
+		,(select username from SYS_USER where SYS_USER_ID = a.cuserid) cusername
+		,(select username from SYS_USER where SYS_USER_ID = a.euserid) eusername
+		from Product_instance a
+		LEFT JOIN admin_region m on a.Region_code = m.admin_region_id LEFT JOIN
+		admin_region n on m.parent_admin_region_id = n.admin_region_id
+		left JOIN admin_region p on n.parent_admin_region_id = p.admin_region_id
+		) x 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="maxTime != null and maxTime != ''">and Created_time &lt;= #{maxTime}</if>
+				<if test="minTime != null and minTime != ''">and Created_time >= #{minTime}</if>
+				<if test="productId != null and productId != ''">and productId = #{productId}</if>
+				<if test="regionId != null and regionId != ''">and region_code = #{regionId}</if>
+				<if test="regionId1 != null and regionId1 != ''">and id2 = #{regionId1}</if>
+				<if test="regionId2 != null and regionId2 != ''">and id1 = #{regionId2}</if>
+				<if test="sendstate != null and sendstate != ''">and sendstate = #{sendstate}</if>
+				<if test="created_time != null and created_time != ''">and CONVERT(varchar(10), Created_time,120) = #{created_time}</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询产品实例列表条数 -->
+	<select id="queryProductCount" parameterType="com.platform.business.dto.ProductDto" resultType="java.lang.Long">
+		select count(Instanceid) as count from (
+		select Instanceid, Region_code, Productid, Period, Content, Created_time, cuserid, sendstate, euserid, edate, 
+		(select Product_name from Product where Productid = a.Productid) Productname,
+		m.admin_region_name name3,m.parent_admin_region_id id2,n.admin_region_name
+		name2,n.parent_admin_region_id id1,p.admin_region_name name1
+		,(select username from SYS_USER where SYS_USER_ID = a.cuserid) cusername
+		,(select username from SYS_USER where SYS_USER_ID = a.euserid) eusername
+		from Product_instance a
+		LEFT JOIN admin_region m on a.Region_code = m.admin_region_id LEFT JOIN
+		admin_region n on m.parent_admin_region_id = n.admin_region_id
+		left JOIN admin_region p on n.parent_admin_region_id = p.admin_region_id
+		) x 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="maxTime != null and maxTime != ''">and Created_time &lt;= #{maxTime}</if>
+				<if test="minTime != null and minTime != ''">and Created_time >= #{minTime}</if>
+				<if test="productId != null and productId != ''">and productId = #{productId}</if>
+				<if test="regionId != null and regionId != ''">and region_code = #{regionId}</if>
+				<if test="regionId1 != null and regionId1 != ''">and id2 = #{regionId1}</if>
+				<if test="regionId2 != null and regionId2 != ''">and id1 = #{regionId2}</if>
+				<if test="sendstate != null and sendstate != ''">and sendstate = #{sendstate}</if>
+				<if test="created_time != null and created_time != ''">and CONVERT(varchar(10), Created_time,120) = #{created_time}</if>
+			</trim>
+		</where>
+	</select>
+	
+	<select id="queryProduct5days" parameterType="com.platform.business.dto.ProductDto" resultType="java.util.HashMap">
+		select Instanceid, Region_code, Productid, Period, content, Created_time, sendstate, cuserid from Product_instance 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="maxTime != null and maxTime != ''">and Created_time &lt;= #{maxTime}</if>
+				<if test="minTime != null and minTime != ''">and Created_time >= #{minTime}</if>
+				<if test="productId != null and productId != ''">and productId = #{productId}</if>
+				<if test="regionId != null and regionId != ''">and region_code = #{regionId}</if>
+				<if test="instanceid != null and instanceid != ''">and Instanceid = #{instanceid}</if>
+			</trim>
+		</where>
+	</select>
+	
+	<select id="queryPeriod" parameterType="com.platform.business.dto.ProductDto" resultType="java.util.HashMap">
+		SELECT * FROM (
+			SELECT RELATION_PERIOD_ID, PRODUCT_ID, REGION_ID, R.PERIOD_ID, STIME, ETIME, P.PERIOD_NAME FROM T_RELATION_PERIOD R LEFT JOIN T_PERIOD P ON R.PERIOD_ID = P.PERIOD_ID
+		) X
+		<where>
+			<trim prefixOverrides="and">
+				<if test="productId != null and productId != ''">and PRODUCT_ID = #{productId}</if>
+				<if test="regionId != null and regionId != ''">and REGION_ID = #{regionId}</if>
+			</trim>
+		</where>
+	</select>
+
+	<select id="queryProductCombo" resultType="java.util.HashMap">
+		select Productid, Product_name from Product
+	</select>
+	<select id="queryProductComboNew__" resultType="java.util.HashMap">
+		select Productid, Product_name from Product where getdate() between effect_time and expire_time and (isvalid &lt;> 'D' OR isvalid is null)
+	</select>
+	<select id="queryProductComboNew_" resultType="java.util.HashMap">
+		select Productid, Product_name from Product where (isvalid &lt;> 'D' OR isvalid is null)
+	</select>
+	<select id="queryProductComboNew" resultType="java.util.HashMap">
+		select DISTINCT p.Productid, Product_name, rp.type from Product p left JOIN Region_product rp ON p.Productid = rp.Productid 
+		 where getdate() between effect_time and expire_time and (isvalid &lt;> 'D' OR isvalid is null) and (rp.type = 0 or rp.type is null)
+	</select>
+	
+	<select id="queryRegionTree" parameterType="com.platform.business.dto.ProductDto" resultType="java.util.HashMap">
+	with cte_root(admin_region_id,parent_admin_region_id, admin_region_name) as ( 
+	select admin_region_id,parent_admin_region_id,admin_region_name from admin_region 
+	<where>
+		<trim prefixOverrides="and">
+			<if test="productId != null and productId != '' and productId != 1"> admin_region_id IN (select region_code from Region_product where productid = #{productId} and type = 0) </if>
+			<if test="productId == 1"> admin_region_id IN (select region_code from Region_product where type = 1) </if>
+		</trim>
+	</where>
+	union all 
+	select a.admin_region_id,a.parent_admin_region_id,a.admin_region_name 
+	from admin_region a 
+	inner join 
+	cte_root b 
+	on a.admin_region_id=b.parent_admin_region_id 
+	) 
+	select DISTINCT admin_region_id id, parent_admin_region_id pid, admin_region_name text 
+	from cte_root ;
+	</select>
+	<select id="queryRegionTree__" parameterType="java.lang.String" resultType="java.util.HashMap">
+	with
+	cte_child(admin_region_id,parent_admin_region_id,admin_region_name)
+	as
+	(
+	select admin_region_id,parent_admin_region_id,admin_region_name
+	from
+	admin_region
+	where parent_admin_region_id = '9999'
+	union all
+	select
+	a.admin_region_id,a.parent_admin_region_id,a.admin_region_name
+	from
+	admin_region a
+	inner join
+	cte_child b
+	on (
+	a.parent_admin_region_id=b.admin_region_id)
+	)
+	select admin_region_id id, parent_admin_region_id pid, admin_region_name text from cte_child
+	</select>
+	
+	<!-- 插入短信实例 -->
+	<insert id="insertInstance" parameterType="com.platform.business.dto.ProductDto">
+		insert into Product_instance (Region_code,Productid,Content,Created_time,cuserid, sendstate, Period, kdate) values(#{cc},#{cc1},#{messageBody},getdate(),#{cuserid}, #{sendstate}, getdate(), CONVERT(varchar(10), getdate(),120))
+	</insert>
+	
+	<update id="updateInstance" parameterType="com.platform.business.dto.ProductDto">
+		update Product_instance set Content = #{messageBody}, euserid = #{euserid}, edate = getdate(), sendstate = #{sendstate} where instanceid = #{instanceid} 
+	</update>
+	
+	<!-- 提交审批 -->
+	<update id="toExaminInstance" parameterType="com.platform.business.dto.ProductDto">
+		update Product_instance set sendstate = #{sendstate} where instanceid = #{instanceid} 
+	</update>
+	
+	<select id="queryInstanceById" resultType="java.util.HashMap" parameterType="java.lang.String">
+		select instanceid, region_code,productid, content, created_time from product_instance where instanceid = #{instanceid}
+	</select>
+	
+	<!-- 删除 -->
+	<delete id="deleteInstance" parameterType="java.lang.String">
+		delete from product_instance where instanceid = #{instanceid} and sendstate in ('-2', '-3')
+	</delete>
+	
+	
+		<select id="queryInstanceMonitor" parameterType="com.platform.business.dto.ProductDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select * from (
+			select a.Productid,
+			(select Product_name from Product where Productid = a.Productid) Productname,
+			a.Region_code, b.instanceid, b.sendstate,
+		
+			m.admin_region_name name3,m.parent_admin_region_id id2,n.admin_region_name
+			name2,n.parent_admin_region_id id1,p.admin_region_name name1
+		
+			,(CASE WHEN b.instanceid is null then 1 else 0 end) x1
+			,(CASE b.sendstate WHEN -2 then 1 else 0 end) x2
+			,(CASE b.sendstate WHEN -1 then 1 else 0 end) x3
+			,(CASE b.sendstate WHEN -3 then 1 else 0 end) x4
+			,(CASE b.sendstate WHEN 0 then 1 else 0 end) x5
+			,(CASE b.sendstate WHEN 1 then 1 else 0 end) x6
+			from (
+			select DISTINCT 1 Productid, rp.Region_code from Product p INNER JOIN Region_product rp
+			on p.Productid = rp.Productid 
+			<where>
+				<trim prefixOverrides="and">
+					<if test="created_time != null and created_time != ''">#{created_time} between effect_time and expire_time </if>
+					<if test="created_time == null or created_time == ''">GETDATE() between effect_time and expire_time </if>
+				</trim>
+			</where>
+			 and (p.isvalid &lt;> 'D' OR isvalid is null) and rp.type = 1 
+			 
+			 UNION all 
+			  
+			select p.Productid, rp.Region_code from Product p INNER JOIN Region_product rp
+			on p.Productid = rp.Productid 
+			<where>
+				<trim prefixOverrides="and">
+					<if test="created_time != null and created_time != ''">#{created_time} between effect_time and expire_time </if>
+					<if test="created_time == null or created_time == ''">GETDATE() between effect_time and expire_time </if>
+				</trim>
+			</where>
+			 and (p.isvalid &lt;> 'D' OR isvalid is null) and rp.type = 0 
+			) a
+			LEFT JOIN (select * from Product_instance
+			
+			<where>
+				<trim prefixOverrides="and">
+					<if test="created_time != null and created_time != ''">CONVERT(varchar(10), #{created_time},120) = CONVERT(varchar(10), Created_time,120)</if>
+					<if test="created_time == null or created_time == ''">CONVERT(varchar(10), GETDATE(),120) = CONVERT(varchar(10), Created_time,120)</if>
+				</trim>
+			</where>
+			
+			) b
+			on a.Productid = b.Productid and a.Region_code = b.Region_code
+		
+			LEFT JOIN admin_region m on a.Region_code = m.admin_region_id LEFT JOIN
+			admin_region n on m.parent_admin_region_id = n.admin_region_id
+			left JOIN admin_region p on n.parent_admin_region_id = p.admin_region_id) k
+		<where>
+			<trim prefixOverrides="and">
+				<if test="sendstate != null and sendstate != ''">and sendstate = #{sendstate}</if>
+				<if test="x1 != null and x1 != ''">and x1 = #{x1}</if>
+				<if test="productId != null and productId != ''">and productId = #{productId}</if>
+				<if test="regionId != null and regionId != ''">and region_code = #{regionId}</if>
+				<if test="regionId1 != null and regionId1 != ''">and id2 = #{regionId1}</if>
+				<if test="regionId2 != null and regionId2 != ''">and id1 = #{regionId2}</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询产品实例列表条数 -->
+	<select id="queryInstanceMonitorCount" parameterType="com.platform.business.dto.ProductDto" resultType="java.lang.Long">
+		select count(Productid) as count from (
+			select a.Productid,
+			(select Product_name from Product where Productid = a.Productid) Productname,
+			a.Region_code, b.instanceid, b.sendstate,
+		
+			m.admin_region_name name3,m.parent_admin_region_id id2,n.admin_region_name
+			name2,n.parent_admin_region_id id1,p.admin_region_name name1
+		
+			,(CASE WHEN b.instanceid is null then 1 else 0 end) x1
+			from (
+			select DISTINCT 1 Productid, rp.Region_code from Product p INNER JOIN Region_product rp
+			on p.Productid = rp.Productid 
+			<where>
+				<trim prefixOverrides="and">
+					<if test="created_time != null and created_time != ''">#{created_time} between effect_time and expire_time </if>
+					<if test="created_time == null or created_time == ''">GETDATE() between effect_time and expire_time </if>
+				</trim>
+			</where>
+			 and (p.isvalid &lt;> 'D' OR isvalid is null) and rp.type = 1 
+			 
+			 UNION all 
+			  
+			select p.Productid, rp.Region_code from Product p INNER JOIN Region_product rp
+			on p.Productid = rp.Productid 
+			<where>
+				<trim prefixOverrides="and">
+					<if test="created_time != null and created_time != ''">#{created_time} between effect_time and expire_time </if>
+					<if test="created_time == null or created_time == ''">GETDATE() between effect_time and expire_time </if>
+				</trim>
+			</where>
+			 and (p.isvalid &lt;> 'D' OR isvalid is null) and rp.type = 0 
+			) a
+			LEFT JOIN (select * from Product_instance
+			
+			<where>
+				<trim prefixOverrides="and">
+					<if test="created_time != null and created_time != ''">CONVERT(varchar(10), #{created_time},120) = CONVERT(varchar(10), Created_time,120)</if>
+					<if test="created_time == null or created_time == ''">CONVERT(varchar(10), GETDATE(),120) = CONVERT(varchar(10), Created_time,120)</if>
+				</trim>
+			</where>
+			
+			) b
+			on a.Productid = b.Productid and a.Region_code = b.Region_code
+		
+			LEFT JOIN admin_region m on a.Region_code = m.admin_region_id LEFT JOIN
+			admin_region n on m.parent_admin_region_id = n.admin_region_id
+			left JOIN admin_region p on n.parent_admin_region_id = p.admin_region_id
+		) v 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="sendstate != null and sendstate != ''">and sendstate = #{sendstate}</if>
+				<if test="x1 != null and x1 != ''">and x1 = #{x1}</if>
+				<if test="productId != null and productId != ''">and productId = #{productId}</if>
+				<if test="regionId != null and regionId != ''">and region_code = #{regionId}</if>
+				<if test="regionId1 != null and regionId1 != ''">and id2 = #{regionId1}</if>
+				<if test="regionId2 != null and regionId2 != ''">and id1 = #{regionId2}</if>
+			</trim>
+		</where>
+	</select>
+	
+	<!-- 查询预报信息 -->
+	<select id="queryForecast" parameterType="com.platform.business.dto.ProductDto" resultType="java.util.HashMap">
+		select 
+		u.urban_forecast_transfer_id,u.time,stationname, 
+		(CASE TIME WHEN '48' THEN '明天' ELSE '' END + u._forecast_time + '，' + u.lunar_play_time + '，' + u.solar_terms + '，' + u.temp_en + '，' + u.weather + '，' + u.wind_d 
+		+ u.wind_v + '。') content,  u._forecast_time,  u.weather , time 
+		from awstation a LEFT JOIN
+		urban_forecast_transfer u on
+		a.StationNum = u.forecast_station_id where a.stationclass = 'NA' and 
+		admin_region_id = #{regionId} and
+		play_time = (
+		select max(u.play_time) from
+		awstation a LEFT JOIN urban_forecast_transfer u
+		on a.StationNum =
+		u.forecast_station_id
+		where admin_region_id = #{regionId} and a.stationclass = 'NA' and 
+		play_time = CONVERT(varchar(10), #{created_time}, 120) + ' 08:00:00' GROUP BY forecast_station_id) and TIME in
+		(48) 
+		
+		union all 
+		
+		select 
+		u.urban_forecast_transfer_id,u.time,stationname, 
+		(u._forecast_time + '，' + u.temp_en + '，' + u.weather + '，' + u.wind_d 
+		+ u.wind_v + '。') content ,  u._forecast_time,  u.weather  , time 
+		from awstation a LEFT JOIN
+		urban_forecast_transfer u on
+		a.StationNum = u.forecast_station_id where a.stationclass = 'NA' and 
+		admin_region_id = #{regionId} and
+		play_time = (
+		select max(u.play_time) from
+		awstation a LEFT JOIN urban_forecast_transfer u
+		on a.StationNum =
+		u.forecast_station_id
+		where admin_region_id = #{regionId} and a.stationclass = 'NA' and 
+		play_time = CONVERT(varchar(10), #{created_time}, 120) + ' 08:00:00' GROUP BY forecast_station_id) and TIME in
+		(72) 
+		
+		union all
+		
+		select 
+		u.urban_forecast_transfer_id,u.time,stationname, 
+		(u._forecast_time + '，' + u.temp_en + '，' + u.weather + '，' + u.wind_d 
+		+ u.wind_v + '。') content ,  u._forecast_time,  u.weather  , time 
+		from awstation a LEFT JOIN
+		urban_forecast_transfer u on
+		a.StationNum = u.forecast_station_id where a.stationclass = 'NA' and 
+		admin_region_id = #{regionId} and
+		play_time = (
+		select max(u.play_time) from
+		awstation a LEFT JOIN urban_forecast_transfer u
+		on a.StationNum =
+		u.forecast_station_id
+		where admin_region_id = #{regionId} and a.stationclass = 'NA' and 
+		play_time + 1 = CONVERT(varchar(10), #{created_time}, 120) + ' 20:00:00' GROUP BY forecast_station_id) and TIME in
+		(108) 
+	</select>
+	
+	
+	
+	
+	<!-- 检测usercode唯一性 -->
+	<select id="validateUserCode" resultType="java.lang.Long" parameterType="java.lang.String">
+		select count(sys_user_id) as count from SYS_USER where usercode = #{usercode}
+	</select>
+	
+	<!-- 根据ID查询用户信息 -->
+	<select id="queryUserById" resultType="java.util.HashMap" parameterType="java.lang.String">
+		select sys_user_id, username, usercode, isvalid, password from SYS_USER where sys_user_id = #{id}
+	</select>
+	
+	<!-- 更新用户信息 -->
+	<update id="updateUser_mysql" parameterType="com.platform.authorization.dto.UserDto">
+		update SYS_USER set username = #{username}, isvalid = #{isvalid}, euserid = #{euserid}, edate = now() 
+		where sys_user_id = #{sys_user_id}
+	</update>
+	<update id="updateUser_sqlserver2008" parameterType="com.platform.authorization.dto.UserDto">
+		update SYS_USER set username = #{username}, isvalid = #{isvalid}, euserid = #{euserid}, edate = getdate() 
+		where sys_user_id = #{sys_user_id}
+	</update>
+	
+	<!-- 删除用户 -->
+	<update id="deleteUser" parameterType="java.lang.String">
+		update SYS_USER set isvalid = 'D' where sys_user_id = #{id}
+	</update>
+	
+	<!-- 重置用户密码 -->
+	<update id="updatePasswd_mysql" parameterType="com.platform.authorization.dto.UserDto">
+		update SYS_USER set password = #{password}, euserid = #{euserid}, edate = now() 
+		where sys_user_id = #{sys_user_id}
+	</update>
+	<update id="updatePasswd_sqlserver2008" parameterType="com.platform.authorization.dto.UserDto">
+		update SYS_USER set password = #{password}, euserid = #{euserid}, edate = getdate() 
+		where sys_user_id = #{sys_user_id}
+	</update>
+	
+	<!-- 授权角色 -->
+	<insert id="assignGroup" parameterType="com.platform.authorization.dto.UserDto">
+		insert into SYS_USER_GROUP (sys_user_id, sys_group_id) values (#{sys_user_id}, #{sys_group_id})
+	</insert>
+	
+	<!-- 移除角色授权 -->
+	<delete id="cancelGroup" parameterType="com.platform.authorization.dto.UserDto">
+		delete from SYS_USER_GROUP where sys_user_id = #{sys_user_id} and sys_group_id in (${ids})
+	</delete>
+	
+	<!-- 查询角色未授权的用户列表 -->
+	<select id="noExistUser_mysql" parameterType="com.platform.authorization.dto.UserDto" resultType="java.util.HashMap">
+		select sys_user_id,username,cuserid,cdate,euserid,edate,password,isvalid,usercode from SYS_USER 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and usercode like CONCAT("%",#{usercode},"%")</if>
+				<!-- 超级管理员不可见 -->
+				<if test="true"> and sys_user_id != 1 </if>
+				<!-- 被删除的用户不可见 -->
+				<if test="true"> and isvalid != 'D' </if>
+				and sys_user_id 
+				<if test="exist == 0"> not in </if> 
+				<if test="exist == 1"> in </if> 
+				(select sys_user_id from SYS_USER_GROUP where sys_group_id = #{sys_group_id})
+			</trim>
+		</where>
+		<if test="sqlOrder != null"> ${sqlOrder} </if>
+		<if test="sqlLimit != null"> ${sqlLimit} </if>
+	</select>
+	
+	<select id="noExistUser_sqlserver2008" parameterType="com.platform.authorization.dto.UserDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select sys_user_id,username,cuserid,cdate,euserid,edate,password,isvalid,usercode from SYS_USER 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and usercode like '%' + '${usercode}' + '%'</if>
+				<!-- 超级管理员不可见 -->
+				<if test="true"> and sys_user_id != 1 </if>
+				<!-- 被删除的用户不可见 -->
+				<if test="true"> and isvalid != 'D' </if>
+				and sys_user_id 
+				<if test="exist == 0"> not in </if> 
+				<if test="exist == 1"> in </if> 
+				(select sys_user_id from SYS_USER_GROUP where sys_group_id = #{sys_group_id})
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询角色未授权的用户列表条数 -->
+	<select id="noExistUserCount_mysql" parameterType="com.platform.authorization.dto.UserDto" resultType="java.lang.Long">
+		select count(sys_user_id) as count from SYS_USER 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and usercode like CONCAT("%",#{usercode},"%")</if>
+				<!-- 超级管理员不可见 -->
+				<if test="true"> and sys_user_id != 1 </if>
+				<!-- 被删除的用户不可见 -->
+				<if test="true"> and isvalid != 'D' </if>
+				and sys_user_id 
+				<if test="exist == 0"> not in </if> 
+				<if test="exist == 1"> in </if> 
+				(select sys_user_id from SYS_USER_GROUP where sys_group_id = #{sys_group_id})
+			</trim>
+		</where>
+	</select>
+	
+	<select id="noExistUserCount_sqlserver2008" parameterType="com.platform.authorization.dto.UserDto" resultType="java.lang.Long">
+		select count(sys_user_id) as count from SYS_USER 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and usercode like '%' + '${usercode}' + '%'</if>
+				<!-- 超级管理员不可见 -->
+				<if test="true"> and sys_user_id != 1 </if>
+				<!-- 被删除的用户不可见 -->
+				<if test="true"> and isvalid != 'D' </if>
+				and sys_user_id 
+				<if test="exist == 0"> not in </if> 
+				<if test="exist == 1"> in </if> 
+				(select sys_user_id from SYS_USER_GROUP where sys_group_id = #{sys_group_id})
+			</trim>
+		</where>
+	</select>
+	
+</mapper>

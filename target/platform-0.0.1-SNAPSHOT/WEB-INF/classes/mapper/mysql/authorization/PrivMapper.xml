@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.authorization.dto.PrivDto">
+
+	<sql id="column">
+		sys_privilege_id,name,menutype,url,memo,logflag,parentid,cuserid,cdate,euserid,edate
+	</sql>
+
+	<!-- 针对超级管理员功能点管理模块的树查询 -->
+	<select id="queryTreeGridForAdmin" resultType="java.util.HashMap">
+		select 
+		sys_privilege_id,name,menutype,url,memo,logflag,cuserid,cdate,euserid,edate,parentid 
+		,(CASE WHEN menutype = 0 then '菜单' when menutype = 1 then '按钮' else '' END) as menuname
+		 from SYS_PRIVILEGE
+	</select>
+	
+	<!-- 根据用户id的功能点管理模块树查询 -->
+	<select id="queryTreeGrid" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select 
+		s.sys_privilege_id,name,menutype,url,memo,logflag,cuserid,cdate,euserid,edate,parentid 
+		,(CASE WHEN menutype = 0 then '菜单' when menutype = 1 then '按钮' else '' END) as menuname
+		 from SYS_PRIVILEGE s INNER JOIN (SELECT SYS_PRIVILEGE_ID FROM SYS_USER_GROUP a INNER JOIN SYS_GROUP_PRIVILEGE b ON a.SYS_GROUP_ID = b.SYS_GROUP_ID WHERE SYS_USER_ID = #{userId}) a ON s.SYS_PRIVILEGE_ID = a.SYS_PRIVILEGE_ID
+	</select>
+	
+	<insert id="insertPriv_mysql" parameterType="com.platform.authorization.dto.PrivDto">
+		insert into SYS_PRIVILEGE (NAME,MENUTYPE,URL,memo,parentid,cuserid,cdate,sort) 
+		values(#{name},#{menutype},#{url},#{memo},#{parentid},#{cuserid},NOW(),#{sort})	
+	</insert>
+	<insert id="insertPriv_sqlserver2008" parameterType="com.platform.authorization.dto.PrivDto">
+		insert into SYS_PRIVILEGE (NAME,MENUTYPE,URL,memo,parentid,cuserid,cdate,sort) 
+		values(#{name},#{menutype},#{url},#{memo},#{parentid},#{cuserid},getdate(),#{sort})	
+	</insert>
+	
+	<delete id="deletePriv" parameterType="java.lang.String">
+		delete from SYS_PRIVILEGE where sys_privilege_id = #{id}
+	</delete>
+	
+	<select id="queryPrivById" resultType="java.util.HashMap" parameterType="java.lang.String">
+		SELECT
+		a.sys_privilege_id,a.name,a.menutype,a.url,a.memo,a.logflag,a.parentid,a.cuserid,a.cdate,a.euserid,a.edate,b.name as parentname,a.sort
+		FROM
+		SYS_PRIVILEGE a LEFT JOIN SYS_PRIVILEGE b ON   b.SYS_PRIVILEGE_ID = a.PARENTID 
+		where a.SYS_PRIVILEGE_ID = #{id} 
+	</select>
+	
+	<update id="updatePriv_mysql" parameterType="com.platform.authorization.dto.PrivDto">
+		update SYS_PRIVILEGE set name = #{name},menutype = #{menutype},url = #{url},memo = #{memo},euserid = #{euserid},edate = now(),sort=#{sort} where sys_privilege_id = #{sys_privilege_id}
+	</update>
+	<update id="updatePriv_sqlserver2008" parameterType="com.platform.authorization.dto.PrivDto">
+		update SYS_PRIVILEGE set name = #{name},menutype = #{menutype},url = #{url},memo = #{memo},euserid = #{euserid},edate = getdate(),sort=#{sort} where sys_privilege_id = #{sys_privilege_id}
+	</update>
+	
+	<!-- 查询角色对应资源id -->
+	<select id="queryPrivs" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select sys_privilege_id from SYS_GROUP_PRIVILEGE where sys_group_id = #{sys_group_id} and status = 1
+	</select>
+	
+	<!-- 删除角色对应资源关系 -->
+	<delete id="deleteGrantPriv">
+		delete from SYS_GROUP_PRIVILEGE where sys_group_id = #{id}
+	</delete>
+	
+	<!-- 添加角色对应资源关系 -->
+	<insert id="insertGrantPriv">
+		insert into SYS_GROUP_PRIVILEGE (sys_group_id, sys_privilege_id, status) values (#{sys_group_id}, #{sys_privilege_id}, #{status})
+	</insert>
+	
+</mapper>

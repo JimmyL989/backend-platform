@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.authorization.dto.LogonDto">
+
+	<sql id="Base_Column_List">
+		sys_user_id as userid, usercode, username, cuserid, cdate, euserid, edate, password, isvalid,mac
+	</sql>
+	
+	<resultMap type="java.util.Map" id="selectByCode_Map"></resultMap>
+
+	<select id="selectByCode" resultMap="selectByCode_Map" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_USER
+		where userCode = #{userCode}
+	</select>
+	
+
+	<!-- 根据上级ID查询所有菜单 -->
+	<select id="queryforRootMenuUrlListForAdmin" resultType="java.util.HashMap" parameterType="java.lang.Integer">
+		select sys_privilege_id,name,menutype,url,logflag,parentid from SYS_PRIVILEGE s where s.parentid = #{rootId} and s.menutype = '0' order by sort asc
+	</select>
+	
+	<!-- 根据上级ID及用户权限查询一级菜单 -->
+	<select id="queryforRootMenuUrlList" resultType="java.util.HashMap" parameterType="com.platform.authorization.dto.LogonDto">
+		select distinct s.sys_privilege_id,name,menutype,url,logflag,parentid,sort from SYS_PRIVILEGE s 
+		INNER JOIN (SELECT SYS_PRIVILEGE_ID FROM SYS_USER_GROUP a INNER JOIN SYS_GROUP_PRIVILEGE b ON a.SYS_GROUP_ID = b.SYS_GROUP_ID WHERE SYS_USER_ID = #{userid}) a ON s.SYS_PRIVILEGE_ID = a.SYS_PRIVILEGE_ID 
+		 where s.parentid = #{rootid} and s.menutype = '0' 
+		order by sort asc
+<!-- 		select sys_privilege_id,name,menutype,url,logflag,parentid from SYS_PRIVILEGE s where s.parentid = #{rootId} and s.menutype = '0' 
+		and sys_privilege_id in (SELECT SYS_PRIVILEGE_ID FROM SYS_USER_GROUP a INNER JOIN SYS_GROUP_PRIVILEGE b ON a.SYS_GROUP_ID = b.SYS_GROUP_ID WHERE SYS_USER_ID = #{userid})
+		order by sort asc -->
+	</select>
+	
+	<!-- 查询超级管理员拥有权限的url -->
+	<select id="queryforAuthUrlsForAdmin" resultType="java.util.HashMap">
+		select url from SYS_PRIVILEGE
+	</select>
+	
+	<!-- 查询用户拥有权限的url -->
+	<select id="queryforAuthUrls" resultType="java.util.HashMap">
+		select url from SYS_PRIVILEGE a INNER JOIN (SELECT b.SYS_PRIVILEGE_ID FROM SYS_USER_GROUP a 
+		INNER JOIN SYS_GROUP_PRIVILEGE b ON a.SYS_GROUP_ID = b.SYS_GROUP_ID
+        WHERE SYS_USER_ID = #{userId}) b on a.SYS_PRIVILEGE_ID = b.SYS_PRIVILEGE_ID
+	</select>
+	
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache" readOnly="true"/> -->
+
+	<!-- <resultMap id="BaseResultMap" type="com.platform.agate.domain.vo.TestDemoVo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="age" property="age" jdbcType="VARCHAR" />
+		<result column="portrait_url" property="portrait_url" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id as id,
+		name as name,
+		age as age, 
+		portrait_url as portrait_url
+	</sql>
+	
+	
+	<sql id="Base_Where_Clause">
+		<where>
+			<trim prefixOverrides="and">
+				<if test="id != null and id != 0"> and id = #{id}</if>
+				<if test="name != null">and name = #{name}</if>
+				<if test="age != null and age != 0">and age = #{age}</if>
+				<if test="portrait_url != null">and portrait_url = #{portrait_url}</if>
+				
+				模糊查询
+				<if test="queryLike != null">and name like CONCAT("%",#{queryLike},"%")</if>
+			</trim>
+		</where>
+		<if test="sorting != null">order by ${sorting}</if>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</sql>
+	
+	查询总数
+	<select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+		select count(id)
+		from user
+		<include refid="Base_Where_Clause" />
+	</select>
+	
+	查询
+	<select id="select" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		<include refid="Base_Where_Clause" />
+	</select>
+	
+	根据ID查询
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where id = #{id}
+	</select>
+	
+	根据ID删除
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from user
+		where id = #{id}
+	</delete>
+	
+	删除
+	<delete id="delete" parameterType="java.util.Map">
+		delete from user
+		<include refid="Base_Where_Clause" />
+	</delete>
+
+	添加	
+	<insert id="insert" parameterType="com.platform.agate.domain.TestDemo">
+		insert into user(
+			name, 
+			age,
+			portrait_url 
+		)
+		values (
+			#{name},
+			#{age},
+			#{portrait_url} 
+		)
+	</insert>
+	
+	
+	通过ID更新
+	<update id="updateByIdSelective" parameterType="com.platform.agate.domain.TestDemo">
+		update user
+		<set>
+			<if test="name != null">name = #{name},</if>
+			<if test="age != null and age != 0">age = #{age},</if>
+			<if test="portrait_url != null">portrait_url = #{portrait_url}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateById" parameterType="com.platform.agate.domain.TestDemo">
+		update user
+		set name = #{name},
+		age = #{age},
+		portrait_url = #{portrait_url}
+		where id = #{id}
+	</update>
+	 -->
+</mapper>

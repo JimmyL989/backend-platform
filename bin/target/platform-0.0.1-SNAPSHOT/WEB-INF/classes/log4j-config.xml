@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="ConsoleLogger" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5p]  %c {%F:%L} - %m%n"/>
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="info"/>
+			<param name="LevelMax" value="fatal"/>
+			<param name="AcceptOnMatch" value="true"/>
+		</filter>
+	</appender>
+	
+	<appender name="OperateLogger"
+		class="com.platform.frame.log.log4j.appender.OperateLogAppender">
+		<param name="BufferSize" value="20"/>
+		<filter class="com.platform.frame.log.log4j.extLevel.LevelRangeFilter">
+			<param name="LevelMin" value="warn"/>
+			<param name="LevelMax" value="error"/>
+			<param name="AcceptOnMatch" value="true"/>
+		</filter>
+	</appender>
+
+	<appender name="LogonLogger"
+		class="com.platform.frame.log.log4j.appender.LogonLogAppender">
+		<param name="BufferSize" value="1"/>
+		<filter class="com.platform.frame.log.log4j.extLevel.LevelRangeFilter">
+			<param name="LevelMin" value="error"/>
+			<param name="LevelMax" value="fatal"/>
+			<param name="AcceptOnMatch" value="true"/>
+		</filter>
+	</appender>
+
+	<appender name="SqlLogger"
+		class="com.platform.frame.log.log4j.appender.SqlLogAppender">
+		<param name="BufferSize" value="5" />
+		<!-- FilterExp为过滤条件，all-输出所有类型的日志，其它值参考DaoConstants.java中 queryType和excuteType的值，多个使用","分隔 -->
+		<param name="FilterExp" value="all" />
+		<filter class="com.platform.frame.log.log4j.extLevel.LevelRangeFilter">
+			<param name="LevelMin" value="info" />
+			<param name="LevelMax" value="warn" />
+			<param name="AcceptOnMatch" value="true" />
+		</filter>
+	</appender>
+	
+	<root>
+		<level value="info"/>
+		<appender-ref ref="DEBUGF"/>
+		<appender-ref ref="INFOF"/>
+		<appender-ref ref="WARNF"/>
+		<appender-ref ref="ERRORF"/>
+		<appender-ref ref="FATALF"/>
+		<appender-ref ref="ConsoleLogger"/>
+		<appender-ref ref="OperateLogger"/>
+		<appender-ref ref="LogonLogger"/>
+		<appender-ref ref="SqlLogger"/>
+	</root>
+
+</log4j:configuration>

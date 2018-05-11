@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.business.dto.DivisionDto">
+
+	<sql id="column">
+		sys_privilege_id,name,menutype,url,memo,logflag,parentid,cuserid,cdate,euserid,edate
+	</sql>
+
+	<select id="queryTreeGrid" resultType="java.util.HashMap">
+		select admin_region_id,admin_region_name,parent_admin_region_id from admin_region
+	</select>
+	
+	<insert id="insertDivision" parameterType="com.platform.business.dto.DivisionDto">
+		insert into admin_region (admin_region_id,admin_region_name,parent_admin_region_id) 
+		values(#{admin_region_id},#{admin_region_name},#{parentid})	
+	</insert>
+	
+	<delete id="deleteDivision" parameterType="java.lang.String">
+		delete from admin_region where admin_region_id = #{id}
+	</delete>
+	
+	<select id="queryDivisionById" resultType="java.util.HashMap" parameterType="java.lang.String">
+		SELECT
+		a.admin_region_id,a.admin_region_name,a.parent_admin_region_id,b.admin_region_name as parentname
+		FROM
+		admin_region a LEFT JOIN admin_region b ON   b.admin_region_id = a.parent_admin_region_id 
+		where a.admin_region_id = #{id} 
+	</select>
+	
+	<update id="updateDivision" parameterType="com.platform.business.dto.DivisionDto">
+		update admin_region set admin_region_name = #{admin_region_name},admin_region_id = #{admin_region_id} where admin_region_id = #{admin_region_id}
+	</update>
+	
+</mapper>

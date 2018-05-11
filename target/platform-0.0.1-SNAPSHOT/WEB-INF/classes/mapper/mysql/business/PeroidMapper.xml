@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.business.dto.PeriodDto">
+
+	<!-- 查询基础农作物下拉列表 -->
+	<select id="queryPeriodCombo" parameterType="com.platform.business.dto.PeriodDto" resultType="java.util.HashMap">
+		select period_id, period_name from t_period
+	</select>
+	<select id="queryPeriodComboByCrops" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select cp.period_id, p.period_name from T_CROPS_PERIOD cp LEFT JOIN T_PERIOD p on cp.period_id = p.Period_id where crops_id = #{crops_id}
+	</select>
+
+	<!-- 查询基础生长发育期列表 -->
+	<select id="queryPeriod" parameterType="com.platform.business.dto.PeriodDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select period_id, period_name from t_period
+		<where>
+			<trim prefixOverrides="and">
+				<if test="period_name != null and period_name != ''">and period_name like '%' + '${period_name}' + '%'</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询基础生长发育期列表条数 -->
+	<select id="queryPeriodCount" parameterType="com.platform.business.dto.PeriodDto" resultType="java.lang.Long">
+		select count(period_id) from t_period
+		<where>
+			<trim prefixOverrides="and">
+				<if test="period_name != null and period_name != ''">and period_name like '%' + '${period_name}' + '%'</if>
+			</trim>
+		</where>
+	</select>
+	
+	<!-- 插入生长发育期 -->
+	<insert id="insertPeriod" parameterType="com.platform.business.dto.PeriodDto">
+		insert into t_period (period_name) values(#{period_name})
+	</insert>
+	
+	<!-- 根据ID查询生长发育期 -->
+	<select id="queryPeriodById" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select period_id, period_name from t_period where period_id = #{period_id}
+	</select>
+	
+	<!-- 修改生长发育期 -->
+	<update id="updatePeriod" parameterType="com.platform.business.dto.PeriodDto">
+		update t_period set period_name = #{period_name} where period_id = #{period_id} 
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="deletePeriod" parameterType="java.lang.String">
+		delete from t_period where period_id = #{period_id}
+	</delete>
+	
+</mapper>

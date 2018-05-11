@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.business.dto.AdviceDto">
+
+	<!-- 查询相关建议列表 -->
+	<select id="queryRelevant" parameterType="com.platform.business.dto.AdviceDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select  
+		crops_id, (select crops_name from T_CROPS where crops_id = r.crops_id) crops_name, period_id, (select period_name from T_PERIOD where period_id = r.period_id) period_name,
+		 advice_relevant_id, content from T_ADVICE_RELEVANT r  
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询基础农作物列表条数 -->
+	<select id="queryRelevantCount" parameterType="com.platform.business.dto.AdviceDto" resultType="java.lang.Long">
+		select count(advice_relevant_id) from T_ADVICE_RELEVANT
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+	</select>
+	
+	<!-- 查询相关建议列表 -->
+	<select id="queryReference" parameterType="com.platform.business.dto.AdviceDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select  
+		crops_id, (select crops_name from T_CROPS where crops_id = r.crops_id) crops_name, period_id, (select period_name from T_PERIOD where period_id = r.period_id) period_name,
+		 advice_reference_id, content from T_ADVICE_Reference r  
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询基础农作物列表条数 -->
+	<select id="queryReferenceCount" parameterType="com.platform.business.dto.AdviceDto" resultType="java.lang.Long">
+		select count(advice_reference_id) from T_ADVICE_Reference
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+	</select>
+
+	<!-- 查询基础农作物列表 -->
+	<select id="queryAnalysis" parameterType="com.platform.business.dto.AdviceDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select 
+		crops_id, (select crops_name from T_CROPS where crops_id = r.crops_id) crops_name, period_id, (select period_name from T_PERIOD where period_id = r.period_id) period_name,
+		advice_analysis_id, element, factor, conditions, content1, content2 from T_ADVICE_ANALYSIS r 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询基础农作物列表条数 -->
+	<select id="queryAnalysisCount" parameterType="com.platform.business.dto.AdviceDto" resultType="java.lang.Long">
+		select count(advice_analysis_id) from T_ADVICE_ANALYSIS
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+	</select>
+
+	<!-- 查询基础农作物列表 -->
+	<select id="queryFaming" parameterType="com.platform.business.dto.AdviceDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select 
+		crops_id, (select crops_name from T_CROPS where crops_id = r.crops_id) crops_name, period_id, (select period_name from T_PERIOD where period_id = r.period_id) period_name,
+		advice_farming_id, content from T_ADVICE_FAMING r 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询基础农作物列表条数 -->
+	<select id="queryFamingCount" parameterType="com.platform.business.dto.AdviceDto" resultType="java.lang.Long">
+		select count(advice_farming_id) from T_ADVICE_FAMING
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+	</select>
+
+	<!-- 查询基础农作物列表 -->
+	<select id="queryPlant" parameterType="com.platform.business.dto.AdviceDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select 
+		crops_id, (select crops_name from T_CROPS where crops_id = r.crops_id) crops_name, period_id, (select period_name from T_PERIOD where period_id = r.period_id) period_name,
+		advice_plant_id, name, conditions, symptom, measures,CASE WHEN period_id is NULL THEN '通用' ELSE '特定' end type from T_ADVICE_PLANT r 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询基础农作物列表条数 -->
+	<select id="queryPlantCount" parameterType="com.platform.business.dto.AdviceDto" resultType="java.lang.Long">
+		select count(advice_plant_id) from T_ADVICE_PLANT
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+	</select>
+
+	<!-- 查询基础农作物列表 -->
+	<select id="queryDeficiency" parameterType="com.platform.business.dto.AdviceDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select 
+		crops_id, (select crops_name from T_CROPS where crops_id = r.crops_id) crops_name,
+		advice_deficiency_id, name, content from T_ADVICE_DEFICIENCY r 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询基础农作物列表条数 -->
+	<select id="queryDeficiencyCount" parameterType="com.platform.business.dto.AdviceDto" resultType="java.lang.Long">
+		select count(advice_deficiency_id) from T_ADVICE_DEFICIENCY
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+			</trim>
+		</where>
+	</select>
+
+	<!-- 查询基础农作物列表 -->
+	<select id="queryCultivation" parameterType="com.platform.business.dto.AdviceDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select 
+		crops_id, (select crops_name from T_CROPS where crops_id = r.crops_id) crops_name, period_id, (select period_name from T_PERIOD where period_id = r.period_id) period_name,
+		advice_cultivation_id, content,CASE WHEN period_id is NULL THEN '通用' ELSE '特定' end type from T_ADVICE_CULTIVATION r 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询基础农作物列表条数 -->
+	<select id="queryCultivationCount" parameterType="com.platform.business.dto.AdviceDto" resultType="java.lang.Long">
+		select count(advice_cultivation_id) from T_ADVICE_CULTIVATION
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+	</select>
+	
+	<!-- 插入农作物 -->
+	<insert id="insertRelevant" parameterType="com.platform.business.dto.AdviceDto">
+		insert into T_ADVICE_RELEVANT (crops_id, period_id, content) values(#{crops_id}, #{period_id}, #{content})
+	</insert>
+	<insert id="insertReference" parameterType="com.platform.business.dto.AdviceDto">
+		insert into T_ADVICE_Reference (crops_id, period_id, content) values(#{crops_id}, #{period_id}, #{content})
+	</insert>
+	<insert id="insertAnalysis" parameterType="com.platform.business.dto.AdviceDto">
+		insert into T_ADVICE_ANALYSIS (crops_id, period_id, element, factor, conditions, content1, content2) values(#{crops_id}, #{period_id}, #{element}, #{factor}, #{conditions}, #{content1}, #{content2})
+	</insert>
+	<insert id="insertFaming" parameterType="com.platform.business.dto.AdviceDto">
+		insert into T_ADVICE_FAMING (crops_id, period_id, content) values(#{crops_id}, #{period_id}, #{content})
+	</insert>
+	<insert id="insertPlant" parameterType="com.platform.business.dto.AdviceDto">
+		insert into T_ADVICE_PLANT (crops_id, period_id, name, conditions, symptom, measures) values(#{crops_id}, #{period_id}, #{name}, #{conditions}, #{symptom}, #{measures})
+	</insert>
+	<insert id="insertDeficiency" parameterType="com.platform.business.dto.AdviceDto">
+		insert into T_ADVICE_DEFICIENCY (crops_id, name, content) values(#{crops_id}, #{name}, #{content})
+	</insert>
+	<insert id="insertCultivation" parameterType="com.platform.business.dto.AdviceDto">
+		insert into T_ADVICE_CULTIVATION (crops_id, period_id, content) values(#{crops_id}, #{period_id}, #{content})
+	</insert>
+	
+	
+	<!-- 根据ID查询作物 -->
+	<select id="queryRelevanById" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select crops_id, period_id, advice_relevant_id, content from T_ADVICE_RELEVANT where advice_relevant_id = #{id}
+	</select>
+	<select id="queryReferenceById" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select crops_id, period_id, advice_reference_id, content from T_ADVICE_REFERENCE where advice_reference_id = #{id}
+	</select>
+	<select id="queryAnalysisById" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select crops_id, period_id, advice_analysis_id, element, factor, conditions, content1, content2 from T_ADVICE_ANALYSIS where advice_analysis_id = #{id}
+	</select>
+	<select id="queryFamingById" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select crops_id, period_id, advice_farming_id, content from T_ADVICE_FAMING where advice_farming_id = #{id}
+	</select>
+	<select id="queryPlantById" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select crops_id, period_id, advice_plant_id, name, conditions, symptom, measures from T_ADVICE_PLANT where advice_plant_id = #{id}
+	</select>
+	<select id="queryDeficiencyById" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select crops_id, advice_deficiency_id, name, content from T_ADVICE_DEFICIENCY where advice_deficiency_id = #{id}
+	</select>
+	<select id="queryCultivationById" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select crops_id, period_id, advice_cultivation_id, content from T_ADVICE_CULTIVATION where advice_cultivation_id = #{id}
+	</select>
+	
+	
+	<!-- 修改农作物 -->
+	<update id="updateRelevant" parameterType="com.platform.business.dto.AdviceDto">
+		update T_ADVICE_RELEVANT set content = #{content}, period_id = #{period_id} where advice_relevant_id = #{advice_relevant_id} 
+	</update>
+	<update id="updateReference" parameterType="com.platform.business.dto.AdviceDto">
+		update T_ADVICE_Reference set content = #{content}, period_id = #{period_id} where advice_Reference_id = #{advice_reference_id} 
+	</update>
+	<update id="updateAnalysis" parameterType="com.platform.business.dto.AdviceDto">
+		update T_ADVICE_ANALYSIS set element = #{element}, factor = #{factor}, conditions = #{conditions}, content1 = #{content1}, content2 = #{content2}, period_id = #{period_id} where advice_analysis_id = #{advice_analysis_id} 
+	</update>
+	<update id="updateFaming" parameterType="com.platform.business.dto.AdviceDto">
+		update T_ADVICE_FAMING set content = #{content}, period_id = #{period_id} where advice_farming_id = #{advice_farming_id} 
+	</update>
+	<update id="updatePlant" parameterType="com.platform.business.dto.AdviceDto">
+		update T_ADVICE_PLANT set name = #{name}, conditions = #{conditions}, symptom = #{symptom}, measures = #{measures}, period_id = #{period_id} where advice_plant_id = #{advice_plant_id} 
+	</update>
+	<update id="updateDeficiency" parameterType="com.platform.business.dto.AdviceDto">
+		update T_ADVICE_DEFICIENCY set name = #{name}, content = #{content} where advice_deficiency_id = #{advice_deficiency_id} 
+	</update>
+	<update id="updateCultivation" parameterType="com.platform.business.dto.AdviceDto">
+		update T_ADVICE_CULTIVATION set content = #{content}, period_id = #{period_id} where advice_cultivation_id = #{advice_cultivation_id} 
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="deleteRelevant" parameterType="java.lang.String">
+		delete from T_ADVICE_RELEVANT where advice_relevant_id = #{id}
+	</delete>
+	<delete id="deleteReference" parameterType="java.lang.String">
+		delete from T_ADVICE_Reference where advice_reference_id = #{id}
+	</delete>
+	<delete id="deleteAnalysis" parameterType="java.lang.String">
+		delete from T_ADVICE_ANALYSIS where advice_analysis_id = #{id}
+	</delete>
+	<delete id="deleteFaming" parameterType="java.lang.String">
+		delete from T_ADVICE_FAMING where advice_farming_id = #{id}
+	</delete>
+	<delete id="deletePlant" parameterType="java.lang.String">
+		delete from T_ADVICE_PLANT where advice_plant_id = #{id}
+	</delete>
+	<delete id="deleteDeficiency" parameterType="java.lang.String">
+		delete from T_ADVICE_DEFICIENCY where advice_deficiency_id = #{id}
+	</delete>
+	<delete id="deleteCultivation" parameterType="java.lang.String">
+		delete from T_ADVICE_CULTIVATION where advice_cultivation_id = #{id}
+	</delete>
+	
+</mapper>

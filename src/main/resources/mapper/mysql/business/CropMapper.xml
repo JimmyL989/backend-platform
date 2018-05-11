@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.business.dto.CropDto">
+
+	<!-- 查询基础农作物下拉列表 -->
+	<select id="queryCropCombo" parameterType="com.platform.business.dto.CropDto" resultType="java.util.HashMap">
+		select crops_id, crops_name from t_crops
+	</select>
+
+	<!-- 查询基础农作物列表 -->
+	<select id="queryCrop" parameterType="com.platform.business.dto.CropDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select crops_id, crops_name from t_crops
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_name != null and crops_name != ''">and crops_name like '%' + '${crops_name}' + '%'</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询基础农作物列表条数 -->
+	<select id="queryCropCount" parameterType="com.platform.business.dto.CropDto" resultType="java.lang.Long">
+		select count(crops_id) from t_crops
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_name != null and crops_name != ''">and crops_name like '%' + '${crops_name}' + '%'</if>
+			</trim>
+		</where>
+	</select>
+	
+	<!-- 插入农作物 -->
+	<insert id="insertCrop" parameterType="com.platform.business.dto.CropDto">
+		insert into t_crops (crops_name) values(#{crops_name})
+	</insert>
+	
+	<!-- 根据ID查询作物 -->
+	<select id="queryCropById" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select crops_id, crops_name from t_crops where crops_id = #{crops_id}
+	</select>
+	
+	<!-- 修改农作物 -->
+	<update id="updateCrop" parameterType="com.platform.business.dto.CropDto">
+		update t_crops set crops_name = #{crops_name} where crops_id = #{crops_id} 
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="deleteCrop" parameterType="java.lang.String">
+		delete from t_crops where crops_id = #{crops_id}
+	</delete>
+	
+</mapper>

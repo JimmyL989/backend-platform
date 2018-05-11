@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.business.dto.DCPDto">
+
+	<!-- 查询生长发育期关系列表 -->
+	<select id="dataGrid" parameterType="com.platform.business.dto.DCPDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select * from (
+			select relation_period_id, product_id, region_id, period_id, stime,
+			etime,
+			(select product_name from product where productid = a.product_id) product_name,
+			(select period_name from t_period where period_id = a.period_id)
+			period_name,
+			m.admin_region_name name3,m.parent_admin_region_id id2,n.admin_region_name
+			name2,n.parent_admin_region_id id1,p.admin_region_name name1
+			from t_relation_period a left join admin_region m on a.region_id =
+			m.admin_region_id left join
+			admin_region n on m.parent_admin_region_id = n.admin_region_id
+			left join admin_region p on n.parent_admin_region_id = p.admin_region_id
+		) x 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="productId != null and productId != ''">and product_id = #{productId}</if>
+				<if test="regionId != null and regionId != ''">and region_id = #{regionId}</if>
+				<if test="regionId1 != null and regionId1 != ''">and id2 = #{regionId1}</if>
+				<if test="regionId2 != null and regionId2 != ''">and id1 = #{regionId2}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询生长发育期关系列表条数 -->
+	<select id="queryUserCount" parameterType="com.platform.business.dto.DCPDto" resultType="java.lang.Long">
+		select count(relation_period_id) as count from (
+			select relation_period_id, product_id, region_id, period_id, stime,
+			etime,
+			(select product_name from product where productid = a.product_id) product_name,
+			(select period_name from t_period where period_id = a.period_id)
+			period_name,
+			m.admin_region_name name3,m.parent_admin_region_id id2,n.admin_region_name
+			name2,n.parent_admin_region_id id1,p.admin_region_name name1
+			from t_relation_period a left join admin_region m on a.region_id =
+			m.admin_region_id left join
+			admin_region n on m.parent_admin_region_id = n.admin_region_id
+			left join admin_region p on n.parent_admin_region_id = p.admin_region_id
+		) x  
+		<where>
+			<trim prefixOverrides="and">
+				<if test="productId != null and productId != ''">and product_id = #{productId}</if>
+				<if test="regionId != null and regionId != ''">and region_id = #{regionId}</if>
+				<if test="regionId1 != null and regionId1 != ''">and id2 = #{regionId1}</if>
+				<if test="regionId2 != null and regionId2 != ''">and id1 = #{regionId2}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+	</select>
+	
+	
+	<select id="queryDivision" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select admin_region_id id, admin_region_name text from admin_region where parent_admin_region_id = #{id} 
+	</select>
+	
+	<select id="queryPeriod" parameterType="com.platform.business.dto.DCPDto" resultType="java.util.HashMap">
+		select relation_period_id, product_id, region_id, period_id, convert(varchar(10), stime, 120) stime, convert(varchar(10), etime, 120) etime from t_relation_period 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="productId != null and productId != ''">and product_id = #{productId}</if>
+				<if test="regionId != null and regionId != ''">and region_id = #{regionId}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+				<if test="relation_period_id != null and relation_period_id != ''">and relation_period_id = #{relation_period_id}</if>
+			</trim>
+		</where>
+	</select>
+	
+	<!-- 插入生长发育期关系 -->
+	<insert id="insertDCP" parameterType="com.platform.business.dto.DCPDto">
+		insert into t_relation_period (product_id, region_id, period_id, stime, etime) values(#{productId}, #{regionId}, #{period_id}, #{stime}, #{etime})
+	</insert>
+	
+	<!-- 更新生长发育期关系 -->
+	<update id="updateDCP" parameterType="com.platform.business.dto.DCPDto">
+		update t_relation_period set product_id = #{productId}, region_id = #{regionId}, period_id = #{period_id}, stime = #{stime}, etime = #{etime} where relation_period_id = #{relation_period_id}
+	</update>
+	
+	<delete id="deleteDCP" parameterType="java.lang.String">
+		delete from t_relation_period where relation_period_id = #{id}
+	</delete>
+	
+	<delete id="batchDeleteDCP" parameterType="com.platform.business.dto.DCPDto">
+		delete from t_relation_period where relation_period_id in (${ids})
+	</delete>
+	
+</mapper>

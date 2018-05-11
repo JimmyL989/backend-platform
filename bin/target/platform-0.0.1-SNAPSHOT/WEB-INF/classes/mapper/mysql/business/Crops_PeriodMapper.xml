@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.business.dto.Crops_PeriodDto">
+
+	<!-- 查询基础农作物列表 -->
+	<select id="queryCrop" parameterType="com.platform.business.dto.Crops_PeriodDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select crops_period_id, crops_id, (select crops_name from t_crops where crops_id = cp.crops_id) crops_name, 
+		period_id, (select period_name from t_period where period_id = cp.period_id) period_name,
+		sdate, edate from t_crops_period cp
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询基础农作物列表条数 -->
+	<select id="queryCropCount" parameterType="com.platform.business.dto.Crops_PeriodDto" resultType="java.lang.Long">
+		select count(*) from t_crops_period
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+	</select>
+	
+	<select id="queryPeriod" parameterType="com.platform.business.dto.Crops_PeriodDto" resultType="java.util.HashMap">
+		select crops_period_id, sdate, edate from t_crops_period 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="crops_id != null and crops_id != ''">and crops_id = #{crops_id}</if>
+				<if test="period_id != null and period_id != ''">and period_id = #{period_id}</if>
+			</trim>
+		</where>
+	</select>
+	
+	<!-- 插入农作物 -->
+	<insert id="insertCrop" parameterType="com.platform.business.dto.Crops_PeriodDto">
+		insert into t_crops_period (crops_id, period_id, sdate, edate) values(#{crops_id}, #{period_id}, #{sdate}, #{edate})
+	</insert>
+	
+	<!-- 根据ID查询作物 -->
+	<select id="queryCropById" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select crops_period_id, crops_id, period_id, convert(varchar(10), sdate, 120) sdate, convert(varchar(10), edate, 120) edate from t_crops_period where crops_period_id = #{crops_id}
+	</select>
+	
+	<!-- 修改农作物 -->
+	<update id="updateCrop" parameterType="com.platform.business.dto.Crops_PeriodDto">
+		update t_crops_period set sdate = #{sdate}, edate = #{edate} where crops_period_id = #{crops_period_id} 
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="deleteCrop" parameterType="java.lang.String">
+		delete from t_crops_period where crops_period_id = #{crops_id}
+	</delete>
+	
+</mapper>

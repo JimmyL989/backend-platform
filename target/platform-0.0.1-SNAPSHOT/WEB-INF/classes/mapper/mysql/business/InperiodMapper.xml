@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.business.dto.InperiodDto">
+
+	<!-- 查询基础农作物列表 -->
+	<select id="queryCrop" parameterType="com.platform.business.dto.InperiodDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select * from (
+		select region_code, productid,type,
+		(select Product_name from Product where Productid = a.Productid) Productname,
+		m.admin_region_name name3,m.parent_admin_region_id id2,n.admin_region_name
+		name2,n.parent_admin_region_id id1,p.admin_region_name name1
+		 from region_product a LEFT JOIN admin_region m on a.Region_code = m.admin_region_id LEFT JOIN
+		admin_region n on m.parent_admin_region_id = n.admin_region_id
+		left JOIN admin_region p on n.parent_admin_region_id = p.admin_region_id
+		) x
+		<where>
+			<trim prefixOverrides="and">
+				<if test="productId != null and productId != ''">and productId = #{productId}</if>
+				<if test="regionId != null and regionId != ''">and region_code = #{regionId}</if>
+				<if test="regionId1 != null and regionId1 != ''">and id2 = #{regionId1}</if>
+				<if test="regionId2 != null and regionId2 != ''">and id1 = #{regionId2}</if>
+				<if test="type != null and type != ''">and type = #{type}</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询基础农作物列表条数 -->
+	<select id="queryCropCount" parameterType="com.platform.business.dto.InperiodDto" resultType="java.lang.Long">
+		select count(region_code) as count from (
+		select region_code, productid,type,
+		(select Product_name from Product where Productid = a.Productid) Productname,
+		m.admin_region_name name3,m.parent_admin_region_id id2,n.admin_region_name
+		name2,n.parent_admin_region_id id1,p.admin_region_name name1
+		 from region_product a LEFT JOIN admin_region m on a.Region_code = m.admin_region_id LEFT JOIN
+		admin_region n on m.parent_admin_region_id = n.admin_region_id
+		left JOIN admin_region p on n.parent_admin_region_id = p.admin_region_id
+		) x 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="productId != null and productId != ''">and productId = #{productId}</if>
+				<if test="regionId != null and regionId != ''">and region_code = #{regionId}</if>
+				<if test="regionId1 != null and regionId1 != ''">and id2 = #{regionId1}</if>
+				<if test="regionId2 != null and regionId2 != ''">and id1 = #{regionId2}</if>
+				<if test="type != null and type != ''">and type = #{type}</if>
+			</trim>
+		</where>
+	</select>
+	
+	<!-- 根据ID查询作物 -->
+	<select id="queryCropById" parameterType="com.platform.business.dto.InperiodDto" resultType="java.util.HashMap">
+		select region_code, productid, type from region_product where region_code = #{regionId} and productid = #{productId}
+	</select>
+	
+	<!-- 修改农作物 -->
+	<update id="updateCrop" parameterType="com.platform.business.dto.InperiodDto">
+		update region_product set type = #{type} where region_code = #{regionId} and productid = #{productId}
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="deleteCrop" parameterType="java.lang.String">
+		delete from t_crops where crops_id = #{crops_id}
+	</delete>
+	
+</mapper>

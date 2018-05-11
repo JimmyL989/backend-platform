@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.authorization.dto.UserDto">
+
+	<!-- 查询用户列表 -->
+	<select id="dataGrid_mysql" parameterType="com.platform.authorization.dto.UserDto" resultType="java.util.HashMap">
+		select sys_user_id,username,cuserid,cdate,euserid,edate,password,isvalid,usercode from SYS_USER 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and usercode like CONCAT("%",#{usercode},"%")</if>
+				<!-- 超级管理员不可见 -->
+				<if test="true"> and sys_user_id != 1</if>
+				<!-- 被删除的用户不可见 -->
+				<if test="true"> and isvalid != 'D'</if>
+			</trim>
+		</where>
+		<if test="sqlOrder != null"> ${sqlOrder} </if>
+		<if test="sqlLimit != null"> ${sqlLimit} </if>
+	</select>
+	
+	<select id="dataGrid_sqlserver2008" parameterType="com.platform.authorization.dto.UserDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select sys_user_id,username,cuserid,cdate,euserid,edate,password,isvalid,usercode from SYS_USER 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and usercode like '%' + '${usercode}' + '%'</if>
+				<!-- 超级管理员不可见 -->
+				<if test="true"> and sys_user_id != 1</if>
+				<!-- 被删除的用户不可见 -->
+				<if test="true"> and isvalid != 'D'</if>
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询用户列表条数 -->
+	<select id="queryUserCount_mysql" parameterType="com.platform.authorization.dto.UserDto" resultType="java.lang.Long">
+		select count(sys_user_id) as count from SYS_USER 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and usercode like CONCAT("%",#{usercode},"%")</if>
+				<!-- 超级管理员不记数 -->
+				<if test="true"> and sys_user_id != 1</if>
+				<!-- 被删除的用户不记数 -->
+				<if test="true"> and isvalid != 'D'</if>
+			</trim>
+		</where>
+	</select>
+	
+	<select id="queryUserCount_sqlserver2008" parameterType="com.platform.authorization.dto.UserDto" resultType="java.lang.Long">
+		select count(sys_user_id) as count from SYS_USER 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and usercode like '%' + '${usercode}' + '%'</if>
+				<!-- 超级管理员不记数 -->
+				<if test="true"> and sys_user_id != 1</if>
+				<!-- 被删除的用户不记数 -->
+				<if test="true"> and isvalid != 'D'</if>
+			</trim>
+		</where>
+	</select>
+	
+
+	
+	
+	
+	<!-- 插入用户 -->
+	<insert id="insertUser_mysql" parameterType="com.platform.authorization.dto.UserDto">
+		insert into SYS_USER (username,usercode,password,cuserid,cdate,isvalid) values(#{username},#{usercode},#{password},#{cuserid},now(),#{isvalid})
+	</insert>
+	<insert id="insertUser_sqlserver2008" parameterType="com.platform.authorization.dto.UserDto">
+		insert into SYS_USER (username,usercode,password,cuserid,cdate,isvalid) values(#{username},#{usercode},#{password},#{cuserid},getdate(),#{isvalid})
+	</insert>
+	
+	<!-- 检测usercode唯一性 -->
+	<select id="validateUserCode" resultType="java.lang.Long" parameterType="java.lang.String">
+		select count(sys_user_id) as count from SYS_USER where usercode = #{usercode}
+	</select>
+	
+	<!-- 根据ID查询用户信息 -->
+	<select id="queryUserById" resultType="java.util.HashMap" parameterType="java.lang.String">
+		select sys_user_id, username, usercode, isvalid, password from SYS_USER where sys_user_id = #{id}
+	</select>
+	
+	<!-- 更新用户信息 -->
+	<update id="updateUser_mysql" parameterType="com.platform.authorization.dto.UserDto">
+		update SYS_USER set username = #{username}, isvalid = #{isvalid}, euserid = #{euserid}, edate = now() 
+		where sys_user_id = #{sys_user_id}
+	</update>
+	<update id="updateUser_sqlserver2008" parameterType="com.platform.authorization.dto.UserDto">
+		update SYS_USER set username = #{username}, isvalid = #{isvalid}, euserid = #{euserid}, edate = getdate() 
+		where sys_user_id = #{sys_user_id}
+	</update>
+	
+	<!-- 删除用户 -->
+	<update id="deleteUser" parameterType="java.lang.String">
+		update SYS_USER set isvalid = 'D' where sys_user_id = #{id}
+	</update>
+	
+	<!-- 重置用户密码 -->
+	<update id="updatePasswd_mysql" parameterType="com.platform.authorization.dto.UserDto">
+		update SYS_USER set password = #{password}, euserid = #{euserid}, edate = now() 
+		where sys_user_id = #{sys_user_id}
+	</update>
+	<update id="updatePasswd_sqlserver2008" parameterType="com.platform.authorization.dto.UserDto">
+		update SYS_USER set password = #{password}, euserid = #{euserid}, edate = getdate() 
+		where sys_user_id = #{sys_user_id}
+	</update>
+	
+	<!-- 授权角色 -->
+	<insert id="assignGroup" parameterType="com.platform.authorization.dto.UserDto">
+		insert into SYS_USER_GROUP (sys_user_id, sys_group_id) values (#{sys_user_id}, #{sys_group_id})
+	</insert>
+	
+	<!-- 移除角色授权 -->
+	<delete id="cancelGroup" parameterType="com.platform.authorization.dto.UserDto">
+		delete from SYS_USER_GROUP where sys_user_id = #{sys_user_id} and sys_group_id in (${ids})
+	</delete>
+	
+	<!-- 查询角色未授权的用户列表 -->
+	<select id="noExistUser_mysql" parameterType="com.platform.authorization.dto.UserDto" resultType="java.util.HashMap">
+		select sys_user_id,username,cuserid,cdate,euserid,edate,password,isvalid,usercode from SYS_USER 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and usercode like CONCAT("%",#{usercode},"%")</if>
+				<!-- 超级管理员不可见 -->
+				<if test="true"> and sys_user_id != 1 </if>
+				<!-- 被删除的用户不可见 -->
+				<if test="true"> and isvalid != 'D' </if>
+				and sys_user_id 
+				<if test="exist == 0"> not in </if> 
+				<if test="exist == 1"> in </if> 
+				(select sys_user_id from SYS_USER_GROUP where sys_group_id = #{sys_group_id})
+			</trim>
+		</where>
+		<if test="sqlOrder != null"> ${sqlOrder} </if>
+		<if test="sqlLimit != null"> ${sqlLimit} </if>
+	</select>
+	
+	<select id="noExistUser_sqlserver2008" parameterType="com.platform.authorization.dto.UserDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select sys_user_id,username,cuserid,cdate,euserid,edate,password,isvalid,usercode from SYS_USER 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and usercode like '%' + '${usercode}' + '%'</if>
+				<!-- 超级管理员不可见 -->
+				<if test="true"> and sys_user_id != 1 </if>
+				<!-- 被删除的用户不可见 -->
+				<if test="true"> and isvalid != 'D' </if>
+				and sys_user_id 
+				<if test="exist == 0"> not in </if> 
+				<if test="exist == 1"> in </if> 
+				(select sys_user_id from SYS_USER_GROUP where sys_group_id = #{sys_group_id})
+			</trim>
+		</where>
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询角色未授权的用户列表条数 -->
+	<select id="noExistUserCount_mysql" parameterType="com.platform.authorization.dto.UserDto" resultType="java.lang.Long">
+		select count(sys_user_id) as count from SYS_USER 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and usercode like CONCAT("%",#{usercode},"%")</if>
+				<!-- 超级管理员不可见 -->
+				<if test="true"> and sys_user_id != 1 </if>
+				<!-- 被删除的用户不可见 -->
+				<if test="true"> and isvalid != 'D' </if>
+				and sys_user_id 
+				<if test="exist == 0"> not in </if> 
+				<if test="exist == 1"> in </if> 
+				(select sys_user_id from SYS_USER_GROUP where sys_group_id = #{sys_group_id})
+			</trim>
+		</where>
+	</select>
+	
+	<select id="noExistUserCount_sqlserver2008" parameterType="com.platform.authorization.dto.UserDto" resultType="java.lang.Long">
+		select count(sys_user_id) as count from SYS_USER 
+		<where>
+			<trim prefixOverrides="and">
+				<if test="usercode != null and usercode != ''">and usercode like '%' + '${usercode}' + '%'</if>
+				<!-- 超级管理员不可见 -->
+				<if test="true"> and sys_user_id != 1 </if>
+				<!-- 被删除的用户不可见 -->
+				<if test="true"> and isvalid != 'D' </if>
+				and sys_user_id 
+				<if test="exist == 0"> not in </if> 
+				<if test="exist == 1"> in </if> 
+				(select sys_user_id from SYS_USER_GROUP where sys_group_id = #{sys_group_id})
+			</trim>
+		</where>
+	</select>
+	
+</mapper>

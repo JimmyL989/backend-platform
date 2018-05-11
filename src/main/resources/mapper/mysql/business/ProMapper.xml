@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.platform.business.dto.ProDto">
+
+	<insert id="insertGrantRegion" parameterType="com.platform.business.dto.ProDto">
+		insert into region_product(productid, region_code) values(#{productid}, #{regionid})
+	</insert>
+
+	<!-- 删除关系表里的对应关系 -->
+	<delete id="deleteGrantRegion" parameterType="java.lang.String">
+		delete from region_product where productid = #{productid}
+	</delete>
+
+	<!-- 行政区划管理模块的树查询 -->
+	<select id="queryTreeGrid" resultType="java.util.HashMap">
+		select admin_region_id, admin_region_name, parent_admin_region_id from admin_region
+	</select>
+
+	<!-- 查询产品对应区划id -->
+	<select id="queryRegions" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select region_code from region_product where productid = #{productid}
+	</select>
+
+	<!-- 查询基础产品列表 -->
+	<select id="queryPro" parameterType="com.platform.business.dto.ProDto" resultType="java.util.HashMap">
+		<if test="before != null and before != ''"> ${before} </if>
+		select productid, product_name, category, data_class, crop, period, created_time, modified_time, effect_time, expire_time, parentid, c.crops_name from product p LEFT JOIN T_CROPS c on p.crop = c.crops_id
+		<where>
+			<trim prefixOverrides="and">
+				<if test="product_name != null and product_name != ''">and product_name like '%' + '${product_name}' + '%'</if>
+				 and (isvalid &lt;> 'D' OR isvalid is null) and productid &lt;> 1
+			</trim>
+		</where>
+		
+		<if test="after != null and after != ''"> ${after} </if>
+	</select>
+	
+	<!-- 查询基础产品列表条数 -->
+	<select id="queryProCount" parameterType="com.platform.business.dto.ProDto" resultType="java.lang.Long">
+		select count(productid) from (select productid, product_name, category, data_class, crop, period, created_time, modified_time, effect_time, expire_time, parentid, c.crops_name from product p LEFT JOIN T_CROPS c on p.crop = c.crops_id where (isvalid &lt;> 'D' OR isvalid is null) and productid &lt;> 1) v
+		<where>
+			<trim prefixOverrides="and">
+				<if test="product_name != null and product_name != ''">and product_name like '%' + '${product_name}' + '%'</if>
+			</trim>
+		</where>
+	</select>
+	
+	<!-- 插入产品 -->
+	<insert id="insertPro" parameterType="com.platform.business.dto.ProDto">
+		insert into product (product_name, crop, created_time, effect_time, expire_time, modified_time, Category, Data_class, Period) values(#{product_name}, #{crop}, getdate(), #{effect_time}, #{expire_time}, getdate(), 'single', 'all', 'day')
+	</insert>
+	
+	<!-- 根据ID查询产品 -->
+	<select id="queryProById" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select productid, product_name, crop, effect_time, expire_time from product where productid = #{productid}
+	</select>
+	
+	<!-- 修改产品 -->
+	<update id="updatePro" parameterType="com.platform.business.dto.ProDto">
+		update product set product_name = #{product_name}, crop = #{crop}, effect_time = #{effect_time}, expire_time = #{expire_time}, modified_time = getdate() where productid = #{productid} 
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="deletePro" parameterType="java.lang.String">
+		<!-- delete from product where productid = #{productid} -->
+		update product set isvalid = 'D' where productid = #{productid}
+	</delete>
+	
+</mapper>
