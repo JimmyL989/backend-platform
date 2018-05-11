@@ -1,0 +1,38 @@
+SYS_PRIVILEGE_ID	NAME	MENUTYPE	URL	MEMO	LOGFLAG	PARENTID	CUSERID	CDATE	EUSERID	EDATE	SORT
+1	Agate管理系统										
+2	系统管理	0	/	memo		1	1	2014/5/16 11:20:55	1	2014/5/26 00:56:23	1
+9	系统设置	0				2					1
+10	人员管理	0	/frame/authorization/user/userList.jsp	人员管理		9			1	2014/5/20 20:06:26	1
+11	角色管理	0	/frame/authorization/group/groupList.jsp	角色管理		9			1	2014/5/21 21:16:07	2
+12	功能点管理	0	/frame/authorization/privilege/privilegeList.jsp	功能点管理		9			1	2014/5/20 20:01:09	3
+37	数据查询	1	/authorization/controller/UserController/dataGrid.do	数据查询		10	1	2014/5/25 21:36:54	1	2014/5/25 22:15:00	1
+38	数据查询	1	/authorization/controller/PrivController/queryTreeGrid.do	数据查询		12	1	2014/5/25 21:59:21			1
+39	添加	1	/authorization/controller/PrivController/addPriv.do	添加		12	1	2014/5/25 22:20:17	1	2014/5/26 01:09:47	2
+41	编辑	1	/authorization/controller/PrivController/editPage.do			12	1	2014/5/26 00:10:10	1	2014/5/26 19:52:20	3
+42	删除	1	/authorization/controller/PrivController/deletePriv.do	删除		12	1	2014/5/26 01:34:03			4
+43	添加	1	/authorization/controller/UserController/addUser.do	添加		10	1	2014/5/26 01:54:52			2
+44	编辑	1	/authorization/controller/UserController/editPage.do			10	1	2014/5/26 01:57:44	1	2014/5/26 19:58:26	3
+45	删除	1	/authorization/controller/UserController/deleteUser.do			10	1	2014/5/26 01:58:41	1	2014/5/26 01:58:49	4
+46	批量删除	1	/authorization/controller/UserController/batchDeleteUser.do			10	1	2014/5/26 02:01:01			5
+47	重置密码	1	/authorization/controller/UserController/resetPasswd.do			10	1	2014/5/26 02:01:41			6
+48	配置角色	1	/frame/authorization/user/user_groupMapping.jsp			10	1	2014/5/26 02:04:03	1	2014/5/26 02:09:51	7
+49	角色分配查询	1	/authorization/controller/GroupController/noExistGroup.do			48	1	2014/5/26 02:10:53	1	2014/5/26 02:11:56	1
+51	授权角色	1	/authorization/controller/UserController/assignGroup.do			48	1	2014/5/26 02:12:27			2
+52	取消授权角色	1	/authorization/controller/UserController/cancelGroup.do			48	1	2014/5/26 02:13:02	1	2014/5/26 02:40:22	3
+53	数据查询	1	/authorization/controller/GroupController/dataGrid.do			11	1	2014/5/26 02:45:42			1
+54	添加	1	/authorization/controller/GroupController/addGroup.do			11	1	2014/5/26 02:46:17			2
+55	编辑	1	/authorization/controller/GroupController/editPage.do			11	1	2014/5/26 02:46:40	1	2014/5/26 19:50:50	3
+56	删除	1	/authorization/controller/GroupController/deleteGroup.do			11	1	2014/5/26 02:47:17			4
+57	分配人员	1	/frame/authorization/group/group_userMapping.jsp			11	1	2014/5/26 02:48:00			5
+58	分配资源	1	/authorization/controller/PrivController/allTree.do			11	1	2014/5/26 02:48:34	1	2014/5/26 02:54:36	6
+59	人员分配查询	1	/authorization/controller/UserController/noExistGroup.do			57	1	2014/5/26 02:49:33			1
+60	授权人员	1	/authorization/controller/GroupController/assignUser.do			57	1	2014/5/26 02:50:14			2
+61	取消授权人员	1	/authorization/controller/GroupController/cancelUser.do			57	1	2014/5/26 02:50:40			3
+62	授权资源	1	/authorization/controller/PrivController/grantPriv.do			58	1	2014/5/26 02:55:48			1
+64	编辑保存	1	/authorization/controller/GroupController/editGroup.do			55	1	2014/5/26 19:51:10			1
+65	编辑保存	1	/authorization/controller/PrivController/editPriv.do			41	1	2014/5/26 19:52:45			1
+66	编辑保存	1	/authorization/controller/UserController/editUser.do			44	1	2014/5/26 19:59:37			1
+71	系统日志管理	0				2	1	2014/5/28 21:47:20			2
+72	登录日志查询	0	/frame/authorization/log/logonLogList.jsp			71	1	2014/5/28 21:48:35	1	2014/5/28 21:49:15	1
+73	请求日志查询	0	/frame/authorization/log/operateLogList.jsp			71	1	2014/5/29 00:25:41			2
+74	数据库日志查询	0	/frame/authorization/log/sqlLogList.jsp			71	1	2014/5/29 00:39:37	1	2014/5/29 00:39:59	3

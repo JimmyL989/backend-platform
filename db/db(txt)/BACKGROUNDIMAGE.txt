@@ -1,0 +1,7 @@
+BACKGROUNDIMAGE_ID	WIDTH	HEIGHT	IMAGEURL	IMAGEDESC	STATUS
+1	271	134	background/gxzdhdd.jpg		1
+2	271	134	background/gxzdhdd.jpg		1
+3	271	134	background/gxzdhdd.jpg		1
+4	271	134	background/gxzdhdd.jpg		1
+5	271	134	background/gxzdhdd.jpg		1
+6	271	134	background/gxzdhdd.jpg		1

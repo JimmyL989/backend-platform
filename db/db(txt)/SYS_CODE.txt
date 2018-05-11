@@ -1,0 +1,7 @@
+type	code	name
+isvalidMap	0	失效
+isvalidMap	1	有效
+logonLogMap	1	登录成功
+logonLogMap	0	登录失败
+sqlLogMap	01	成功
+type		

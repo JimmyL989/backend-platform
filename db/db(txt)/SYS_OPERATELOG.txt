@@ -1,0 +1,113 @@
+ID	OPERATEID	USERID	USERIP	URL	STARTTIME	ENDTIME	MODULE	DESCRIPTION	MACADDR	TIMECOST	OPERATE
+186	3c770860e6e511e350d36d6d228a3858	admin		/authorization/controller/UserController/dataGrid.do	2014/5/29 11:56:38	2014/5/29 11:56:38				12	
+187	3e3d7080e6e511e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 11:56:41	2014/5/29 11:56:41				8	
+188	3e3f1e30e6e511e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 11:56:41	2014/5/29 11:56:41				9	
+189	401f4fe0e6e511e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 11:56:44	2014/5/29 11:56:44				9	
+190	40d7f180e6e511e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 11:56:46	2014/5/29 11:56:46				14	
+191	4168e6e0e6e511e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 11:56:47	2014/5/29 11:56:47				8	
+192	f3a56950e6e511e350d36d6d228a3858	admin		/authorization/controller/UserController/dataGrid.do	2014/5/29 12:01:46	2014/5/29 12:01:46				8	
+193	f451fd00e6e511e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 12:01:47	2014/5/29 12:01:47				7	
+194	f453d1c0e6e511e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 12:01:47	2014/5/29 12:01:47				9	
+195	c1c78450e6ee11e350d36d6d228a3858	admin		/authorization/controller/UserController/dataGrid.do	2014/5/29 13:04:47	2014/5/29 13:04:47				9	
+196	c2b0d2e1e6ee11e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 13:04:49	2014/5/29 13:04:49				10	
+197	c2b31cd0e6ee11e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 13:04:49	2014/5/29 13:04:49				9	
+198	fa5f6e90e6ee11e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 13:06:22	2014/5/29 13:06:22				9	
+199	fa619170e6ee11e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 13:06:22	2014/5/29 13:06:22				11	
+200	fd85dbe0e6ee11e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 13:06:28	2014/5/29 13:06:28				11	
+201	fdf03670e6ee11e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 13:06:28	2014/5/29 13:06:28				6	
+202	ff2d9870e6ee11e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 13:06:30	2014/5/29 13:06:30				9	
+203	ff8cf680e6ee11e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 13:06:31	2014/5/29 13:06:31				8	
+204	01758ca0e6ef11e350d36d6d228a3858	admin		/authorization/controller/UserController/cancelGroup.do	2014/5/29 13:06:34	2014/5/29 13:06:34				8	
+205	017fc5d1e6ef11e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 13:06:34	2014/5/29 13:06:34				9	
+206	017fece0e6ef11e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 13:06:34	2014/5/29 13:06:34				10	
+207	02bb2c00e6ef11e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 13:06:36	2014/5/29 13:06:36				8	
+208	031a8a10e6ef11e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 13:06:37	2014/5/29 13:06:37				6	
+209	0523a080e6ef11e350d36d6d228a3858	admin		/authorization/controller/UserController/assignGroup.do	2014/5/29 13:06:40	2014/5/29 13:06:40				10	
+210	052b68b0e6ef11e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 13:06:40	2014/5/29 13:06:40				7	
+211	052b8fc0e6ef11e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 13:06:40	2014/5/29 13:06:40				8	
+212	1048de30e6ef11e350d36d6d228a3858	admin		/authorization/controller/UserController/dataGrid.do	2014/5/29 13:06:59	2014/5/29 13:06:59				10	
+213	10f5e710e6ef11e350d36d6d228a3858	admin		/authorization/controller/UserController/dataGrid.do	2014/5/29 13:07:00	2014/5/29 13:07:00				8	
+214	11bf78a0e6ef11e350d36d6d228a3858	admin		/authorization/controller/GroupController/dataGrid.do	2014/5/29 13:07:02	2014/5/29 13:07:02				9	
+215	57f12300e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/GroupController/dataGrid.do	2014/5/29 13:08:59	2014/5/29 13:08:59				173	
+216	59a42a30e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/GroupController/dataGrid.do	2014/5/29 13:09:02	2014/5/29 13:09:02				11	
+217	5aab8810e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/GroupController/dataGrid.do	2014/5/29 13:09:04	2014/5/29 13:09:04				12	
+218	5b86cce0e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/GroupController/dataGrid.do	2014/5/29 13:09:05	2014/5/29 13:09:05				9	
+219	5bd031f0e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/GroupController/dataGrid.do	2014/5/29 13:09:06	2014/5/29 13:09:06				8	
+220	60e66150e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/PrivController/allTree.do	2014/5/29 13:09:14	2014/5/29 13:09:14				20	
+221	626f7251e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:09:17	2014/5/29 13:09:17				3	
+222	62714710e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:09:17	2014/5/29 13:09:17				14	
+223	646500c0e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:09:20	2014/5/29 13:09:20				9	
+224	64e49100e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:09:21	2014/5/29 13:09:21				8	
+225	a1cb6300e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:03	2014/5/29 13:11:03				3	
+226	a1cd10b0e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:03	2014/5/29 13:11:03				14	
+227	a33fda90e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:06	2014/5/29 13:11:06				9	
+228	a39f86c0e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:06	2014/5/29 13:11:06				9	
+229	a56579b0e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:09	2014/5/29 13:11:09				10	
+230	a5bce880e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:10	2014/5/29 13:11:10				131	
+231	a6cd4710e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:12	2014/5/29 13:11:12				12	
+232	a73cf8d0e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:12	2014/5/29 13:11:12				8	
+233	a809beb1e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:14	2014/5/29 13:11:14				8	
+234	a8495fc0e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:14	2014/5/29 13:11:14				9	
+235	aa597b10e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/GroupController/cancelUser.do	2014/5/29 13:11:18	2014/5/29 13:11:18				8	
+236	aa67fa00e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:18	2014/5/29 13:11:18				8	
+237	aa6980a0e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:18	2014/5/29 13:11:18				18	
+238	ab528110e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:19	2014/5/29 13:11:19				10	
+239	ab8cf200e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:20	2014/5/29 13:11:20				10	
+240	ac3985b0e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:21	2014/5/29 13:11:21				7	
+241	ac554b11e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:21	2014/5/29 13:11:21				7	
+242	ac6fb0e0e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:21	2014/5/29 13:11:21				7	
+243	ac85d0f1e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:21	2014/5/29 13:11:21				9	
+244	ad622730e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:23	2014/5/29 13:11:23				8	
+245	b40c3d00e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:34	2014/5/29 13:11:34				8	
+246	b40deab0e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:34	2014/5/29 13:11:34				7	
+247	b533f420e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:36	2014/5/29 13:11:36				7	
+248	b56f7680e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:36	2014/5/29 13:11:36				7	
+249	b62f9230e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:37	2014/5/29 13:11:37				8	
+250	b65bd250e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:38	2014/5/29 13:11:38				9	
+171	4efcf720e6e411e350d36d6d228a3858	admin		/authorization/controller/GroupController/dataGrid.do	2014/5/29 11:50:00	2014/5/29 11:50:00				24	
+172	4f46aa50e6e411e350d36d6d228a3858	admin		/authorization/controller/UserController/dataGrid.do	2014/5/29 11:50:00	2014/5/29 11:50:00				14	
+173	5059ef10e6e411e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 11:50:02	2014/5/29 11:50:02				4	
+174	505c11f0e6e411e350d36d6d228a3858	admin		/authorization/controller/GroupController/noExistGroup.do	2014/5/29 11:50:02	2014/5/29 11:50:02				18	
+175	56b4fa80e6e411e350d36d6d228a3858	admin		/authorization/controller/UserController/dataGrid.do	2014/5/29 11:50:13	2014/5/29 11:50:13				16	
+176	5838b450e6e411e350d36d6d228a3858	admin		/authorization/controller/UserController/dataGrid.do	2014/5/29 11:50:15	2014/5/29 11:50:15				9	
+177	588a08a0e6e411e350d36d6d228a3858	admin		/authorization/controller/UserController/dataGrid.do	2014/5/29 11:50:16	2014/5/29 11:50:16				9	
+178	89f45530e6e411e350d36d6d228a3858	admin		/authorization/controller/PrivController/queryTreeGrid.do	2014/5/29 11:51:39	2014/5/29 11:51:39				24	
+179	1aee7020e6e511e350d36d6d228a3858	admin		/authorization/controller/UserController/dataGrid.do	2014/5/29 11:55:42	2014/5/29 11:55:42				13	
+180	1b10ec40e6e511e350d36d6d228a3858	admin		/authorization/controller/GroupController/dataGrid.do	2014/5/29 11:55:42	2014/5/29 11:55:42				9	
+181	1b8ad730e6e511e350d36d6d228a3858	admin		/authorization/controller/PrivController/queryTreeGrid.do	2014/5/29 11:55:43	2014/5/29 11:55:43				17	
+182	32ffefe0e6e511e350d36d6d228a3858	admin		/authorization/controller/GroupController/dataGrid.do	2014/5/29 11:56:22	2014/5/29 11:56:22				28	
+183	33369040e6e511e350d36d6d228a3858	admin		/authorization/controller/UserController/dataGrid.do	2014/5/29 11:56:23	2014/5/29 11:56:23				11	
+184	33a29880e6e511e350d36d6d228a3858	admin		/authorization/controller/PrivController/queryTreeGrid.do	2014/5/29 11:56:23	2014/5/29 11:56:23				16	
+185	3c26c580e6e511e350d36d6d228a3858	admin		/authorization/controller/UserController/dataGrid.do	2014/5/29 11:56:38	2014/5/29 11:56:38				11	
+170	7c494c70e6e311e350d36d6d228a3858	admin		/authorization/controller/UserController/dataGrid.do	2014/5/29 11:44:06	2014/5/29 11:44:06				84	
+251	b8131f40e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/GroupController/assignUser.do	2014/5/29 13:11:41	2014/5/29 13:11:41				5	
+252	b81bf8e0e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:41	2014/5/29 13:11:41				6	
+253	b81c6e10e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/UserController/noExistGroup.do	2014/5/29 13:11:41	2014/5/29 13:11:41				9	
+254	bb125580e6ef11e3c0ccc3490771e5b5	admin		/authorization/controller/PrivController/queryTreeGrid.do	2014/5/29 13:11:46	2014/5/29 13:11:46				32	
+255	e64c6540e6f111e35455c069ae941059	admin		/authorization/controller/GroupController/dataGrid.do	2014/5/29 13:27:17	2014/5/29 13:27:17				25	
+256	e6712b50e6f111e35455c069ae941059	admin		/authorization/controller/PrivController/queryTreeGrid.do	2014/5/29 13:27:17	2014/5/29 13:27:17				34	
+257	e6bed620e6f111e35455c069ae941059	admin		/authorization/controller/UserController/dataGrid.do	2014/5/29 13:27:18	2014/5/29 13:27:18				20	
+258	b93fdb40e6f611e391c4ed66750bb742	admin	0:0:0:0:0:0:0:1	/authorization/controller/GroupController/dataGrid.do	2014/5/29 14:01:49	2014/5/29 14:01:49				107	
+259	ba085b60e6f611e391c4ed66750bb742	admin	0:0:0:0:0:0:0:1	/authorization/controller/PrivController/queryTreeGrid.do	2014/5/29 14:01:50	2014/5/29 14:01:50				58	
+260	d13b13e0e6f611e391c4ed66750bb742	admin	0:0:0:0:0:0:0:1	/authorization/controller/PrivController/addPriv.do	2014/5/29 14:02:29	2014/5/29 14:02:29				78	
+261	d145c240e6f611e391c4ed66750bb742	admin	0:0:0:0:0:0:0:1	/authorization/controller/PrivController/queryTreeGrid.do	2014/5/29 14:02:29	2014/5/29 14:02:29				20	
+262	b5ee0640e6f811e3287bef3a716ea6da	admin	0:0:0:0:0:0:0:1	/authorization/controller/PrivController/queryTreeGrid.do	2014/5/29 14:16:02	2014/5/29 14:16:02				113	
+263	5e552390e6f911e3d8def0acd373127e	admin	0:0:0:0:0:0:0:1	/authorization/controller/UserController/dataGrid.do	2014/5/29 14:20:45	2014/5/29 14:20:45				27	
+264	5e82c340e6f911e3d8def0acd373127e	admin	0:0:0:0:0:0:0:1	/authorization/controller/GroupController/dataGrid.do	2014/5/29 14:20:45	2014/5/29 14:20:45				20	
+265	5eb34920e6f911e3d8def0acd373127e	admin	0:0:0:0:0:0:0:1	/authorization/controller/PrivController/queryTreeGrid.do	2014/5/29 14:20:46	2014/5/29 14:20:46				31	
+266	62dd91e0e6f911e3d8def0acd373127e	admin	0:0:0:0:0:0:0:1	/authorization/controller/UserController/dataGrid.do	2014/5/29 14:20:53	2014/5/29 14:20:53				17	
+267	63051710e6f911e3d8def0acd373127e	admin	0:0:0:0:0:0:0:1	/authorization/controller/GroupController/dataGrid.do	2014/5/29 14:20:53	2014/5/29 14:20:53				8	
+268	6337bfd0e6f911e3d8def0acd373127e	admin	0:0:0:0:0:0:0:1	/authorization/controller/PrivController/queryTreeGrid.do	2014/5/29 14:20:53	2014/5/29 14:20:53				18	
+269	820f68e0e6f911e3d8def0acd373127e	admin	0:0:0:0:0:0:0:1	/authorization/controller/UserController/dataGrid.do	2014/5/29 14:21:45	2014/5/29 14:21:45				12	
+270	823fa0a0e6f911e3d8def0acd373127e	admin	0:0:0:0:0:0:0:1	/authorization/controller/GroupController/dataGrid.do	2014/5/29 14:21:45	2014/5/29 14:21:45				8	
+271	8271d430e6f911e3d8def0acd373127e	admin	0:0:0:0:0:0:0:1	/authorization/controller/PrivController/queryTreeGrid.do	2014/5/29 14:21:46	2014/5/29 14:21:46				30	
+272	83eb06b1e6f911e3d8def0acd373127e	admin	0:0:0:0:0:0:0:1	/authorization/controller/GroupController/dataGrid.do	2014/5/29 14:21:48	2014/5/29 14:21:48				7	
+273	885e8d70e6f911e3d8def0acd373127e	admin	0:0:0:0:0:0:0:1	/authorization/controller/PrivController/allTree.do	2014/5/29 14:21:56	2014/5/29 14:21:56				11	
+274	8a7e8740e6f911e3d8def0acd373127e	admin	0:0:0:0:0:0:0:1	/authorization/controller/PrivController/grantPriv.do	2014/5/29 14:21:59	2014/5/29 14:21:59				75	
+275	90d39f40e6f911e3d8def0acd373127e	bbb	0:0:0:0:0:0:0:1	/authorization/controller/UserController/dataGrid.do	2014/5/29 14:22:10	2014/5/29 14:22:10				10	
+276	910843d0e6f911e3d8def0acd373127e	bbb	0:0:0:0:0:0:0:1	/authorization/controller/GroupController/dataGrid.do	2014/5/29 14:22:10	2014/5/29 14:22:10				9	
+277	912e1b50e6f911e3d8def0acd373127e	bbb	0:0:0:0:0:0:0:1	/authorization/controller/PrivController/queryTreeGrid.do	2014/5/29 14:22:10	2014/5/29 14:22:10				12	
+278	9224b050e6f911e3d8def0acd373127e	bbb	0:0:0:0:0:0:0:1	/authorization/controller/PrivController/allTree.do	2014/5/29 14:22:12	2014/5/29 14:22:12				7	
+279	970b9250e6f911e3d8def0acd373127e	admin	0:0:0:0:0:0:0:1	/authorization/controller/UserController/dataGrid.do	2014/5/29 14:22:20	2014/5/29 14:22:20				9	
+280	9747ff10e6f911e3d8def0acd373127e	admin	0:0:0:0:0:0:0:1	/authorization/controller/GroupController/dataGrid.do	2014/5/29 14:22:21	2014/5/29 14:22:21				7	
+281	9772dfa0e6f911e3d8def0acd373127e	admin	0:0:0:0:0:0:0:1	/authorization/controller/PrivController/queryTreeGrid.do	2014/5/29 14:22:21	2014/5/29 14:22:21				11	

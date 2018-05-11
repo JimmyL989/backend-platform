@@ -1,0 +1,24 @@
+BEGIN
+	declare stop int default 0;  
+ 
+	DECLARE cur_group_id INT;
+
+	DECLARE cur_pg CURSOR FOR select s.sys_group_id from SYS_GROUP_PRIVILEGE s where s.sys_privilege_id = parentid and s.status = 1;
+	
+	declare CONTINUE HANDLER FOR SQLSTATE '02000' SET stop=1;
+
+	OPEN cur_pg;
+
+	FETCH cur_pg INTO cur_group_id;
+   
+	while stop <> 1 do  
+	
+	INSERT INTO SYS_GROUP_PRIVILEGE (sys_group_id, sys_privilege_id, status) values (cur_group_id, id, 1);
+
+	FETCH cur_pg INTO cur_group_id;
+
+	end WHILE;
+
+	CLOSE cur_pg;
+
+END
