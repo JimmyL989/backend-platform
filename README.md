@@ -1,6 +1,6 @@
 # backend-platform
 Spring MVC, mybatis, Mysql/sqlserver    </br> 
-created by: 2014-10
+created in: 2014-10
 
 ![Image discription](https://github.com/whatsgirl/img-storage/blob/master/2018-05-11_15-38-25.png)
 ![Image text](https://github.com/whatsgirl/img-storage/blob/master/2018-05-11_15-38-46.png)
